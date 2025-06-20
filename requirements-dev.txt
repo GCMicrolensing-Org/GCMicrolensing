@@ -1,5 +1,4 @@
 VBMicrolensing 
-TripleLensing 
 numpy 
 matplotlib 
 pandas 
