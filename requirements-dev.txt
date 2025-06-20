@@ -1,0 +1,17 @@
+VBMicrolensing 
+TripleLensing 
+numpy 
+matplotlib 
+pandas 
+scipy 
+seaborn 
+astropy 
+astroquery 
+pyvo 
+emcee 
+corner 
+requests 
+tqdm 
+pybind11 
+jupyter 
+ipywidgets
