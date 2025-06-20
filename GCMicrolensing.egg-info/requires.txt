@@ -1,0 +1,17 @@
+numpy
+matplotlib
+pandas
+scipy
+seaborn
+astropy
+astroquery
+pyvo
+emcee
+corner
+requests
+tqdm
+pybind11
+jupyter
+ipywidgets
+VBMicrolensing
+TripleLensing@ file:///Users/malpas.1/Code/Costa/triplelens

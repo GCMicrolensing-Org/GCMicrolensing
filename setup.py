@@ -1,4 +1,9 @@
 import setuptools
+import os
+
+# Get the absolute path to the triplelens directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+triplelens_path = os.path.join(current_dir, 'triplelens')
 
 setuptools.setup(
     name="GCMicrolensing",
@@ -29,7 +34,7 @@ setuptools.setup(
         "ipywidgets",
         "VBMicrolensing",
         # This next line is the magic part that installs the local triplelens
-        "TripleLensing @ file:./triplelens"    ],
+        f"TripleLensing @ file://{triplelens_path}"    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License", # Assuming a license

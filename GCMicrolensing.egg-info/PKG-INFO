@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: GCMicrolensing
+Version: 0.1.0
+Summary: Tools for simulating gravitational microlensing events.
+Home-page: https://github.com/GregCuautle/SURP25
+Author: Gregory Costa Cuautle
+Author-email: your_student_email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: pandas
+Requires-Dist: scipy
+Requires-Dist: seaborn
+Requires-Dist: astropy
+Requires-Dist: astroquery
+Requires-Dist: pyvo
+Requires-Dist: emcee
+Requires-Dist: corner
+Requires-Dist: requests
+Requires-Dist: tqdm
+Requires-Dist: pybind11
+Requires-Dist: jupyter
+Requires-Dist: ipywidgets
+Requires-Dist: VBMicrolensing
+Requires-Dist: TripleLensing@ file:///Users/malpas.1/Code/Costa/triplelens
+
+# Triple Lens Microlensing Tools
+
+This repository contains tools and code for simulating single, double and triple-lens microlensing events, including image position solving, light curve generation, and centroid shift calculations. It uses a combination of numerical solvers, custom libraries, and scientific Python packages.
+
+> ⚠️ This code is functional but still under development — improvements and cleanup are ongoing.
+
+---
+
+## 🛠️ Installation
+
