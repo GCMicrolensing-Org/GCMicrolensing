@@ -8,8 +8,3 @@ This repository contains tools and code for simulating single, double and triple
 
 ## 🛠️ Installation
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/GregCuautle/SURP25.git
-cd GregCuautle
