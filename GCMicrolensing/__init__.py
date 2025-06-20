@@ -10,8 +10,4 @@ microlensing events, including specialized functions for calculations,
 and utilities for creating engaging plots and animations.
 """
 
-# You can also add import statements here if you want certain
-# functions/classes to be directly accessible when someone does
-# "from GCMicrolensing import ..."
-# For example:
-# from .models import SomeClass, another_function
+from .models import OneL1S, TwoLens1S, ThreeLens1SVBM, ThreeLens1S 

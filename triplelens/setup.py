@@ -46,7 +46,6 @@ ext_modules = [
             # Path to pybind11 headers
             get_pybind_include(),
             get_pybind_include(user=True),
-            "/Library/Python/3.7m/include" #added on 2020 Feb 04
         ],
         language='c++',
         extra_compile_args=['-std=c++11','-O0']
