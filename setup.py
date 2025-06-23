@@ -1,3 +1,5 @@
+"""Packaging script for the :mod:`GCMicrolensing` project."""
+
 import os
 from pathlib import Path
 from setuptools import setup, find_packages
