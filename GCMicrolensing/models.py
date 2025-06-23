@@ -1,3 +1,14 @@
+"""High level models for simulating microlensing events.
+
+This module provides simple classes for single-, double-, and triple-lens
+microlensing scenarios.  The focus is on producing light curves, centroid
+shifts and animated visualisations for teaching or exploratory analyses.
+
+The implementations rely heavily on the `VBMicrolensing` and
+`TripleLensing` packages for the low level calculations of image positions
+and magnifications.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -9,6 +20,20 @@ import math
 from matplotlib.lines import Line2D
 
 class OneL1S:
+    """Simple single-lens single-source (1L1S) model.
+
+    Parameters
+    ----------
+    t0 : float
+        Time of closest approach.
+    tE : float
+        Einstein crossing time.
+    rho : float
+        Source size in units of the Einstein radius.
+    u0_list : list[float]
+        Impact parameters to evaluate.
+    """
+
     def __init__(self, t0, tE, rho, u0_list):
 
         self.t0 = t0
@@ -24,6 +49,13 @@ class OneL1S:
         self.VBM.astrometry = True
 
     def plot_light_curve_on_ax(self, ax):
+        """Plot magnification curve on an existing axis.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes
+            Axis instance to plot on.
+        """
         cmap_es = plt.colormaps['BuPu']
         colors_es = [cmap_es(i) for i in np.linspace(0.5, 1.0, len(self.u0_list))]
         cmap_ps = plt.colormaps['binary']
@@ -46,6 +78,13 @@ class OneL1S:
         ax.legend()
 
     def plot_centroid_shift_on_ax(self, ax):
+        """Plot centroid shift versus time on ``ax``.
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes
+            Axis to draw the centroid shift curve on.
+        """
         cmap_cs = plt.colormaps['BuPu']
         colors_cs = [cmap_cs(i) for i in np.linspace(0.5, 1.0, len(self.u0_list))]
 
@@ -62,22 +101,27 @@ class OneL1S:
         ax.legend()
 
     def plot_light_curve(self):
+        """Display the light curve in a new figure."""
         fig, ax = plt.subplots(figsize=(8, 4))
         self.plot_light_curve_on_ax(ax)
         plt.show()
 
     def plot_centroid_shift(self):
+        """Display the centroid shift curve in a new figure."""
         fig, ax = plt.subplots(figsize=(8, 4))
         self.plot_centroid_shift_on_ax(ax)
         plt.show()
 
     def animate(self):
+        """Return a HTML animation of the event."""
         return self._create_animation(figsize=(6, 6), layout='single')
 
     def show_all(self):
+        """Return an animation with light curve and centroid shift."""
         return self._create_animation(figsize=(14, 6), layout='grid')
 
     def _create_animation(self, figsize=(6, 6), layout='single'):
+        """Construct an animation of the microlensing event."""
         tau = self.tau
         n = len(self.t)
         colors = [plt.colormaps['BuPu'](i) for i in np.linspace(0.5, 1.0, len(self.u0_list))]
@@ -166,6 +210,8 @@ class OneL1S:
         return HTML(ani.to_jshtml())
     
 class TwoLens1S:
+    """Binary-lens, single-source (2L1S) model."""
+
     def __init__(self, t0, tE, rho, u0_list, q, s, alpha):
         self.t0 = t0
         self.tE = tE
@@ -189,6 +235,8 @@ class TwoLens1S:
         self.systems = self._prepare_systems()
 
     def _prepare_systems(self):
+        """Precompute source trajectories and magnifications."""
+
         systems = []
 
         def polygon_area(x, y):
@@ -288,6 +336,7 @@ class TwoLens1S:
         return systems
     
     def plot_caustic_critical_curves(self):
+        """Plot caustics and critical curves for the binary lens."""
         caustics = self.VBM.Caustics(self.s, self.q)
         criticalcurves = self.VBM.Criticalcurves(self.s, self.q)
 
@@ -324,6 +373,7 @@ class TwoLens1S:
         plt.show()
 
     def plot_light_curve(self):
+        """Plot the binary-lens light curve."""
         plt.figure(figsize=(6, 4))
         
         for system in self.systems:
@@ -338,6 +388,7 @@ class TwoLens1S:
         plt.show()    
 
     def animate(self):
+        """Return an animation showing the event evolution."""
         caustics = self.VBM.Caustics(self.s, self.q)
         criticalcurves = self.VBM.Criticalcurves(self.s, self.q)
 
@@ -427,6 +478,7 @@ class TwoLens1S:
         return HTML(ani.to_jshtml())
     
     def plot_centroid_trajectory(self):
+        """Plot the centroid trajectory for each ``u0`` value."""
         plt.figure(figsize=(6, 6))
         for system in self.systems:
             delta_x = system['cent_x_hr'] - system['x_src_hr']
@@ -444,6 +496,7 @@ class TwoLens1S:
         plt.show()
 
     def plot_centroid_shift(self):
+        """Plot the centroid shift amplitude over time."""
         plt.figure(figsize=(6, 4))
         for system in self.systems:
             delta_x = system['cent_x_hr'] - system['x_src_hr']
@@ -460,6 +513,7 @@ class TwoLens1S:
         plt.show()
 
     def show_all(self):
+        """Display a grid of animations and plots."""
 
         fig = plt.figure(figsize=(9, 9), constrained_layout=True)
         gs = GridSpec(2, 2, figure=fig)
@@ -575,6 +629,8 @@ class TwoLens1S:
         return HTML(ani.to_jshtml())
     
 class ThreeLens1SVBM:
+    """Triple-lens, single-source model using VBMicrolensing."""
+
     def __init__(self, t0, tE, rho, u0_list, q2, q3, s12, s23, alpha, psi):
         self.t0 = t0
         self.tE = tE
@@ -601,6 +657,8 @@ class ThreeLens1SVBM:
         self.systems = self._prepare_systems()
 
     def _prepare_systems(self):
+        """Assemble source trajectories and magnifications."""
+
         systems = []
         for u0, color in zip(self.u0_list, self.colors):
             param_vec = [
@@ -625,6 +683,7 @@ class ThreeLens1SVBM:
         return systems
 
     def _setting_parameters(self):
+        """Initialise the lens geometry in the VBM solver."""
         param = [
             np.log(self.s12), np.log(self.q2), self.u0_list[0], self.alpha,
             np.log(self.rho), np.log(self.tE), self.t0,
@@ -633,6 +692,7 @@ class ThreeLens1SVBM:
         _ = self.VBM.TripleLightCurve(param, self.t)
 
     def _compute_lens_positions(self):
+        """Return Cartesian positions of the three lenses."""
         x1, y1 = 0, 0
         x2, y2 = x1 + self.s12, y1
         x3 = self.s23 * np.cos(self.phi)
@@ -640,6 +700,8 @@ class ThreeLens1SVBM:
         return [(x1, y1), (x2, y2), (x3, y3)]
     
     def _calculate_image_positions(self, xs, ys):
+        """Solve the lens equation for a given source position."""
+
         TRIL = TripleLensing.TripleLensing()
         mlens = [1 - self.q2 - self.q3, self.q2, self.q3]
         zlens = self._compute_lens_positions()
@@ -654,6 +716,8 @@ class ThreeLens1SVBM:
         return [complex(re, im) for re, im in zip(real_parts, imag_parts)]
     
     def _true_solution(self, z_image, xs, ys, so_leps=1e-10):
+        """Check if ``z_image`` solves the lens equation."""
+
         mlens = [1 - self.q2 - self.q3, self.q2, self.q3]
         zlens = [complex(x, y) for x, y in self._compute_lens_positions()]
         zs = complex(xs, ys)
@@ -663,6 +727,7 @@ class ThreeLens1SVBM:
         return abs(dzs) < so_leps
 
     def plot_caustic_critical_curves(self):
+        """Visualise caustics and critical curves."""
         self._setting_parameters()
         caustics = self.VBM.Multicaustics()
         criticalcurves = self.VBM.Multicriticalcurves()
@@ -696,6 +761,7 @@ class ThreeLens1SVBM:
         plt.show()
 
     def plot_light_curve(self):
+        """Plot the triple-lens light curve."""
         plt.figure(figsize=(6, 4))
         for system in self.systems:
             plt.plot(self.tau, system['mag'], color=system['color'], label=fr"$u_0$ = {system['u0']}")
@@ -710,9 +776,8 @@ class ThreeLens1SVBM:
     
 
     
-    def plot_different_q3_lc(self, q3_values, reference_q3=None, colormap='RdPu'): 
-        """
-        """
+    def plot_different_q3_lc(self, q3_values, reference_q3=None, colormap='RdPu'):
+        """Compare light curves for multiple ``q3`` values."""
         colors = [plt.colormaps[colormap](i) for i in np.linspace(.5, 1, len(q3_values))]
         
         plt.figure(figsize=(8, 6))
@@ -766,6 +831,8 @@ import TripleLensing
 from TestML import get_crit_caus, getphis_v3, get_allimgs_with_mu, testing
 
 class ThreeLens1S:
+    """Triple-lens model using a direct solver."""
+
     def __init__(self, t0, tE, rho, u0_list, q2, q3, s2, s3, alpha_deg, psi_deg,
                  rs, secnum, basenum, num_points):
 
@@ -801,6 +868,8 @@ class ThreeLens1S:
         self.VBM.SetMethod(self.VBM.Method.Nopoly)
 
     def get_lens_geometry(self):
+        """Return mass fractions and lens coordinates."""
+
         m1 = 1 / (1 + self.q2 + self.q3)
         m2 = self.q2 * m1
         m3 = self.q3 * m1
@@ -813,6 +882,8 @@ class ThreeLens1S:
         return mlens, zlens
 
     def _prepare_systems(self):
+        """Generate trajectories and centroid shifts for each ``u0``."""
+
         systems = []
         mlens, zlens = self.get_lens_geometry()
         z = [[zlens[0], zlens[1]], [zlens[2], zlens[3]], [zlens[4], zlens[5]]]
@@ -854,6 +925,7 @@ class ThreeLens1S:
         return systems
     
     def plot_caustics_and_critical(self):
+        """Plot VBM caustics and critical curves."""
         param = [
             np.log(self.s2), np.log(self.q2), self.u0_list[0], self.alpha_deg,
             np.log(self.rho), np.log(self.tE), self.t0,
@@ -880,6 +952,7 @@ class ThreeLens1S:
         plt.show()
 
     def plot_light_curve(self):
+        """Plot the light curve computed via VBM."""
         plt.figure(figsize=(6, 4))
         for u0, color in zip(self.u0_list, self.colors):
             param = [
@@ -898,6 +971,7 @@ class ThreeLens1S:
         plt.show()    
 
     def plot_centroid_trajectory(self):
+        """Plot centroid trajectories for all sources."""
         plt.figure(figsize=(6, 6))
         for system in self.systems:
             dx = system['cent_x'] - system['y1s']
@@ -912,6 +986,7 @@ class ThreeLens1S:
         plt.show()
 
     def plot_shift_vs_time(self):
+        """Plot centroid shift amplitude for each source over time."""
         plt.figure(figsize=(8, 5))
         for system in self.systems:
             dx = system['cent_x'] - system['y1s']
@@ -926,6 +1001,7 @@ class ThreeLens1S:
         plt.show()
 
     def animate(self):
+        """Create an animation using the direct solver."""
         fig, ax = plt.subplots(figsize=(6, 6))
 
         def update(i):
@@ -945,6 +1021,8 @@ class ThreeLens1S:
         return HTML(ani.to_jshtml())
     
     def animate_combined(self):
+        """Animation overlaying caustics and source motion."""
+
         # First, prepare the caustics and critical curves once using VBM
         param = [
             np.log(self.s2), np.log(self.q2), self.u0_list[0], self.alpha_deg,
