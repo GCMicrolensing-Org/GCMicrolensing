@@ -8,3 +8,13 @@ This repository contains tools and code for simulating single, double and triple
 
 ## 🛠️ Installation
 
+This project uses a regular Python packaging workflow. To install the
+package and its minimal runtime dependencies, execute::
+
+    pip install .
+
+The local `TripleLensing` library will be built and installed
+automatically as part of this process.
+
+For development a more feature rich environment can be created using the
+`environment.yml` file.
