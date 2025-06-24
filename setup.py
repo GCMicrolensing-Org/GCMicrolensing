@@ -1,43 +1,38 @@
-import setuptools
+"""Packaging script for the :mod:`GCMicrolensing` project."""
+
 import os
+from pathlib import Path
+from setuptools import setup, find_packages
 
-# Get the absolute path to the triplelens directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
-triplelens_path = os.path.join(current_dir, 'triplelens')
+current_dir = Path(__file__).resolve().parent
+triplelens_path = current_dir / "triplelens"
 
-setuptools.setup(
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+setup(
     name="GCMicrolensing",
     version="0.1.0",
     author="Gregory Costa Cuautle",
-    author_email="your_student_email@example.com", # Change this!
+    author_email="costa.130@buckeyemail.osu.edu",
     description="Tools for simulating gravitational microlensing events.",
-    long_description=open('README.md').read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/GregCuautle/SURP25", # Or wherever the repo lives
-    packages=setuptools.find_packages(),
-    python_requires='>=3.10', # Based on your environment.yml
+    url="https://github.com/GregCuautle/SURP25",
+    packages=find_packages(exclude=["triplelens", "triplelens.*"]),
+    python_requires=">=3.10",
     install_requires=[
         "numpy",
         "matplotlib",
-        "pandas",
         "scipy",
-        "seaborn",
         "astropy",
-        "astroquery",
-        "pyvo",
-        "emcee",
-        "corner",
-        "requests",
-        "tqdm",
-        "pybind11",
-        "jupyter",
-        "ipywidgets",
         "VBMicrolensing",
-        # This next line is the magic part that installs the local triplelens
-        f"TripleLensing @ file://{triplelens_path}"    ],
+        "pandas",
+        f"TripleLensing @ file://{triplelens_path}",
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License", # Assuming a license
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
 )
