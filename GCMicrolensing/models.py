@@ -30,8 +30,13 @@ class OneL1S:
         Einstein crossing time.
     rho : float
         Source size in units of the Einstein radius.
-    u0_list : list[float]
+    u0_list : list of float
         Impact parameters to evaluate.
+
+    Examples
+    --------
+    >>> model = OneL1S(t0=0.0, tE=20.0, rho=0.01, u0_list=[0.1])
+    >>> model.plot_light_curve()
     """
 
     def __init__(self, t0, tE, rho, u0_list):
@@ -224,7 +229,14 @@ class OneL1S:
         return HTML(ani.to_jshtml())
     
 class TwoLens1S:
-    """Binary-lens, single-source (2L1S) model."""
+    """Binary-lens, single-source (2L1S) model.
+
+    Examples
+    --------
+    >>> model = TwoLens1S(t0=0.0, tE=20.0, rho=0.01,
+    ...                  u0_list=[0.1], q=0.1, s=1.5, alpha=45)
+    >>> model.plot_light_curve()
+    """
 
     def __init__(self, t0, tE, rho, u0_list, q, s, alpha):
         """Create a binary-lens system.
@@ -237,7 +249,7 @@ class TwoLens1S:
             Einstein crossing time.
         rho : float
             Source radius in units of the Einstein radius.
-        u0_list : list[float]
+        u0_list : list of float
             Impact parameters of the source trajectory.
         q : float
             Lens mass ratio ``m2/m1``.
@@ -421,7 +433,13 @@ class TwoLens1S:
         plt.show()    
 
     def animate(self):
-        """Return an animation showing the event evolution."""
+        """Return an animation showing the event evolution.
+
+        Returns
+        -------
+        IPython.display.HTML
+            HTML representation of the animation for use in notebooks.
+        """
         caustics = self.VBM.Caustics(self.s, self.q)
         criticalcurves = self.VBM.Criticalcurves(self.s, self.q)
 
@@ -662,7 +680,15 @@ class TwoLens1S:
         return HTML(ani.to_jshtml())
     
 class ThreeLens1SVBM:
-    """Triple-lens, single-source model using VBMicrolensing."""
+    """Triple-lens, single-source model using VBMicrolensing.
+
+    Examples
+    --------
+    >>> model = ThreeLens1SVBM(t0=0.0, tE=20.0, rho=0.01, u0_list=[0.1],
+    ...                        q2=0.1, q3=0.1, s12=1.2, s23=1.0,
+    ...                        alpha=45.0, psi=30.0)
+    >>> model.plot_light_curve()
+    """
 
     def __init__(self, t0, tE, rho, u0_list, q2, q3, s12, s23, alpha, psi):
         """Initialise the VBMicrolensing triple-lens model.
@@ -675,7 +701,7 @@ class ThreeLens1SVBM:
             Einstein crossing time.
         rho : float
             Source size in Einstein radii.
-        u0_list : list[float]
+        u0_list : list of float
             Impact parameters to compute.
         q2 : float
             Mass ratio of lens 2 relative to lens 1.
@@ -926,7 +952,16 @@ import TripleLensing
 from TestML import get_crit_caus, getphis_v3, get_allimgs_with_mu, testing
 
 class ThreeLens1S:
-    """Triple-lens model using a direct solver."""
+    """Triple-lens model using a direct solver.
+
+    Examples
+    --------
+    >>> model = ThreeLens1S(t0=0.0, tE=20.0, rho=0.01, u0_list=[0.1],
+    ...                     q2=0.1, q3=0.1, s2=1.2, s3=1.0,
+    ...                     alpha_deg=45.0, psi_deg=30.0,
+    ...                     rs=0.01, secnum=10, basenum=50, num_points=100)
+    >>> model.plot_light_curve()
+    """
 
     def __init__(self, t0, tE, rho, u0_list, q2, q3, s2, s3, alpha_deg, psi_deg,
                  rs, secnum, basenum, num_points):
@@ -940,7 +975,7 @@ class ThreeLens1S:
             Einstein crossing time.
         rho : float
             Source radius in Einstein units.
-        u0_list : list[float]
+        u0_list : list of float
             Impact parameters for which to compute trajectories.
         q2 : float
             Mass ratio of lens 2 relative to lens 1.
@@ -996,7 +1031,14 @@ class ThreeLens1S:
         self.VBM.SetMethod(self.VBM.Method.Nopoly)
 
     def get_lens_geometry(self):
-        """Return mass fractions and lens coordinates."""
+        """Return mass fractions and lens coordinates.
+
+        Returns
+        -------
+        tuple of list
+            ``(mlens, zlens)`` where ``mlens`` are the mass fractions and
+            ``zlens`` contains the ``x`` and ``y`` coordinates of each lens.
+        """
 
         m1 = 1 / (1 + self.q2 + self.q3)
         m2 = self.q2 * m1
@@ -1129,7 +1171,13 @@ class ThreeLens1S:
         plt.show()
 
     def animate(self):
-        """Create an animation using the direct solver."""
+        """Create an animation using the direct solver.
+
+        Returns
+        -------
+        IPython.display.HTML
+            HTML representation of the animation for use in notebooks.
+        """
         fig, ax = plt.subplots(figsize=(6, 6))
 
         def update(i):
@@ -1149,7 +1197,13 @@ class ThreeLens1S:
         return HTML(ani.to_jshtml())
     
     def animate_combined(self):
-        """Animation overlaying caustics and source motion."""
+        """Animation overlaying caustics and source motion.
+
+        Returns
+        -------
+        IPython.display.HTML
+            HTML representation of the animation for use in notebooks.
+        """
 
         # First, prepare the caustics and critical curves once using VBM
         param = [
