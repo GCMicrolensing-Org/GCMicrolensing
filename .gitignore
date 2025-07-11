@@ -101,4 +101,8 @@ dmypy.json
 # Project specific
 triplelens/notebooks/
 triplelens/*.ipynb
+triplelens/build/
+triplelens/TripleLensing.egg-info/
+triplelens/.eggs/
+triplelens/var/
 

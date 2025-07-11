@@ -1,0 +1,114 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install system dependencies
+      run: sudo apt-get update && sudo apt-get install -y ffmpeg
+    - name: Install pip, wheel, and build
+      run: python -m pip install --upgrade pip wheel build
+    - name: Install package (with local TripleLensing)
+      run: pip install -e .[dev]
+    - name: Run tests
+      run: pytest --maxfail=2 --disable-warnings
+
+  build-and-release:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Needed for changelog generation
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Install system dependencies
+      run: sudo apt-get update && sudo apt-get install -y ffmpeg
+    
+    - name: Install build dependencies
+      run: python -m pip install --upgrade pip wheel build setuptools
+    
+    - name: Build package
+      run: python -m build
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        body: |
+          ## What's Changed
+          
+          This release includes:
+          - Bug fixes and improvements
+          - Enhanced documentation
+          - Updated dependencies
+          
+          ## Installation
+          
+          ```bash
+          pip install GCMicrolensing
+          ```
+          
+          ## Documentation
+          
+          See the [documentation](https://gcmicrolensing.readthedocs.io/) for usage examples.
+    
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/GCMicrolensing-${{ github.ref_name }}.tar.gz
+        asset_name: GCMicrolensing-${{ github.ref_name }}.tar.gz
+        asset_content_type: application/gzip
+    
+    - name: Upload Wheel Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/GCMicrolensing-${{ github.ref_name }}-py3-none-any.whl
+        asset_name: GCMicrolensing-${{ github.ref_name }}-py3-none-any.whl
+        asset_content_type: application/octet-stream
+
+  # Optional: Publish to PyPI (uncomment if you want to publish)
+  # publish:
+  #   needs: build-and-release
+  #   runs-on: ubuntu-latest
+  #   if: startsWith(github.ref, 'refs/tags/v')
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: Set up Python
+  #     uses: actions/setup-python@v5
+  #     with:
+  #       python-version: '3.12'
+  #   - name: Install build dependencies
+  #     run: python -m pip install --upgrade pip wheel build setuptools
+  #   - name: Build package
+  #     run: python -m build
+  #   - name: Publish to PyPI
+  #     uses: pypa/gh-action-pypi-publish@release/v1
+  #     with:
+  #       password: ${{ secrets.PYPI_API_TOKEN }} 

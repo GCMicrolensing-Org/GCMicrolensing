@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MPLBACKEND: Agg
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install system dependencies
+      run: sudo apt-get update && sudo apt-get install -y ffmpeg
+    - name: Install pip, wheel, and build
+      run: python -m pip install --upgrade pip wheel build
+    - name: Install package (with local TripleLensing)
+      run: pip install -e .[dev]
+    - name: Run tests
+      run: pytest tests/ -v --maxfail=2 --disable-warnings 

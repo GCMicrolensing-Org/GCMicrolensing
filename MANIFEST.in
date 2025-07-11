@@ -1,0 +1,13 @@
+# Include the triplelens directory for local installation
+recursive-include triplelens *
+prune triplelens/build
+prune triplelens/TripleLensing.egg-info
+prune triplelens/.eggs
+prune triplelens/var
+prune triplelens/notebooks
+prune triplelens/*.ipynb
+
+# Include documentation
+recursive-include docs *
+recursive-include README.md
+recursive-include LICENSE 

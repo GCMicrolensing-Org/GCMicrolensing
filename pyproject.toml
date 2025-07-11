@@ -1,3 +1,87 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "GCMicrolensing"
+version = "0.1.0"
+description = "Tools for simulating gravitational microlensing events."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Gregory Costa Cuautle", email = "your_student_email@example.com"}
+]
+maintainers = [
+    {name = "Gregory Costa Cuautle", email = "your_student_email@example.com"}
+]
+keywords = ["astronomy", "microlensing", "gravitational-lensing", "astrophysics"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "pandas",
+    "scipy",
+    "seaborn",
+    "astropy",
+    "astroquery",
+    "pyvo",
+    "emcee",
+    "corner",
+    "requests",
+    "tqdm",
+    "pybind11",
+    "jupyter",
+    "ipywidgets",
+    "VBMicrolensing",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=22.0",
+    "flake8>=5.0",
+    "mypy>=1.0",
+    "pre-commit>=2.0",
+]
+docs = [
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "nbsphinx>=0.8.0",
+    "ipython>=8.0.0",
+    "myst-parser>=0.18.0",
+    "sphinx-autodoc-typehints>=1.19.0",
+    "sphinx-gallery>=0.10.0",
+    "sphinx-copybutton>=0.5.0",
+    "sphinx-panels>=0.6.0",
+    "sphinx-tabs>=3.0.0",
+    "sphinxcontrib-bibtex>=2.4.0",
+    "sphinxcontrib-mermaid>=0.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/GregCuautle/SURP25"
+Documentation = "https://gcmicrolensing.readthedocs.io/"
+Repository = "https://github.com/GregCuautle/SURP25"
+Issues = "https://github.com/GregCuautle/SURP25/issues"
+
+[tool.setuptools]
+packages = ["GCMicrolensing"]
+
+[tool.setuptools.package-data]
+GCMicrolensing = ["*.txt", "*.md", "*.rst"]
+
+# Note: TripleLensing dependency is handled in setup.py due to local file path
+# This is a limitation of pyproject.toml - it doesn't support file:// URLs well 
