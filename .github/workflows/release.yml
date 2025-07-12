@@ -31,6 +31,9 @@ jobs:
         python -m pip install -r requirements-dev.txt
         python -m pip install VBMicrolensing>=5.0.0
 
+    - name: Install package in development mode
+      run: pip install .
+
     - name: Update version and citation files
       run: |
         VERSION=${GITHUB_REF_NAME#v}
@@ -93,6 +96,8 @@ jobs:
         python -m pip install pybind11 numpy
         python -m pip install -r requirements-dev.txt
         python -m pip install VBMicrolensing>=5.0.0
+    - name: Install package in development mode
+      run: pip install .
     - name: Build package
       run: python -m build
     - name: Publish to TestPyPI
@@ -119,6 +124,8 @@ jobs:
         python -m pip install pybind11 numpy
         python -m pip install -r requirements-dev.txt
         python -m pip install VBMicrolensing>=5.0.0
+    - name: Install package in development mode
+      run: pip install .
     - name: Build package
       run: python -m build
     - name: Publish to PyPI
