@@ -15,6 +15,20 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/GregCuautle/SURP25",
     packages=find_packages(),
+    package_data={
+        "GCMicrolensing.triplelens": [
+            "pymodule/python_bindings.cpp",
+            "src/VBBinaryLensingLibrary.cpp",
+            "src/TripleLensingLibrary.cpp",
+            "src/VBBinaryLensingLibrary.h",
+            "src/TripleLensingLibrary.h",
+            "setup.py",
+            "setup.cfg",
+            "README.md",
+            "LICENSE.md",
+        ],
+    },
+    include_package_data=True,
     python_requires=">=3.10",
     install_requires=[
         "numpy",
