@@ -24,7 +24,15 @@ jobs:
       run: python -m pip install --upgrade pip wheel build
     - name: Install pybind11
       run: pip install pybind11>=2.3
+    - name: Build TripleLensing extension
+      run: |
+        cd triplelens
+        python setup.py build_ext --inplace
+        ls -la *.so *.pyd 2>/dev/null || echo "No extension files found"
+        cd ..
     - name: Install package (with local TripleLensing)
-      run: pip install -e .[dev]
+      run: |
+        pip install -e .[dev]
+        python -c "import TripleLensing; print('TripleLensing imported successfully')" || echo "TripleLensing import failed"
     - name: Run tests
       run: pytest tests/ -v --maxfail=2 --disable-warnings
