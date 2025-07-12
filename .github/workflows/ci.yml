@@ -30,6 +30,11 @@ jobs:
         python setup.py build_ext --inplace
         ls -la *.so *.pyd 2>/dev/null || echo "No extension files found"
         cd ..
+    - name: Install TripleLensing directly
+      run: |
+        cd triplelens
+        pip install -e .
+        cd ..
     - name: Install package (with local TripleLensing)
       run: |
         pip install -e .[dev]
