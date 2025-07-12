@@ -6,9 +6,31 @@ GCMicrolensing can be installed using pip or conda. The package requires Python 
 Prerequisites
 ------------
 
-* Python 3.10 or higher
-* pip or conda package manager
-* C++ compiler (for building dependencies)
+This package requires a custom version of `TripleLensing` with modifications by Gregory Costa Cuautle. The installation process depends on how you obtained this package:
+
+Option 1: From Source (Recommended)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you cloned this repository, the custom `TripleLensing` is included and will be installed automatically:
+
+.. code-block:: bash
+
+   git clone <repository-url>
+   cd Costa
+   pip install -e .
+
+Option 2: Manual Installation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you're installing from a distribution that doesn't include `TripleLensing`, you'll need to install it manually:
+
+.. code-block:: bash
+
+   # First install GCMicrolensing
+   pip install GCMicrolensing
+
+   # Then install the custom TripleLensing (instructions to be provided)
+   # This requires the custom version with Greg's modifications
 
 Dependencies
 -----------
@@ -50,8 +72,8 @@ Clone the repository and install in development mode:
 
 .. code-block:: bash
 
-   git clone https://github.com/GregCuautle/GCMicrolensing.git
-   cd GCMicrolensing
+   git clone https://github.com/AmberLee2427/Costa.git
+   cd Costa
    pip install -e .
 
 Using Conda
@@ -112,7 +134,7 @@ Getting Help
 If you encounter issues during installation:
 
 1. Check the `troubleshooting` section above
-2. Search existing issues on the `GitHub repository <https://github.com/GregCuautle/GCMicrolensing/issues>`_
+2. Search existing issues on the `GitHub repository <https://github.com/AmberLee2427/Costa/issues>`_
 3. Create a new issue with detailed error information
 
 Development Installation
@@ -122,10 +144,9 @@ For developers who want to contribute to the project:
 
 .. code-block:: bash
 
-   git clone https://github.com/GregCuautle/GCMicrolensing.git
-   cd GCMicrolensing
+   git clone https://github.com/AmberLee2427/Costa.git
+   cd Costa
    pip install -e ".[dev]"
-   pip install -r requirements-dev.txt
 
 This installs additional development dependencies for testing and documentation building.
 
@@ -159,7 +180,7 @@ Release Checklist
 Follow these steps for each new release:
 
 1. **Bump the version**
-   - Update the version in `pyproject.toml` and `setup.py`.
+   - Update the version in `setup.py`.
    - Update the version and date in `CITATION.cff`.
    - Optionally update the version in `README.md` and documentation.
 
@@ -185,9 +206,3 @@ Follow these steps for each new release:
    - Confirm that PyPI, CI, and ReadTheDocs badges are up to date in the README and docs.
 
 Automated workflows will help with some of these steps, but always double-check before publishing!
-
----
-
-.. include:: ../README.md
-   :start-after: # Installation
-   :end-before: # Usage

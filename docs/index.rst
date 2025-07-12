@@ -63,7 +63,6 @@ Installation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Installation
 
    installation
 
@@ -72,7 +71,6 @@ API Reference
 
 .. toctree::
    :maxdepth: 2
-   :caption: API Reference
 
    api/models
 
