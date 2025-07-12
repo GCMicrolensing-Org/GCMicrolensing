@@ -12,6 +12,7 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes as iax
 
 from .triplelens import TripleLensing
 
+# Initialize TripleLensing
 TRIL = TripleLensing()
 
 NLENS = 3
@@ -1001,7 +1002,7 @@ def FS_vs_VBBL():
     dtVBBL = dtVBBL.reshape((ImgSize, ImgSize))
 
     cmap = "seismic"
-    plt.figure(figsize=(18, 7))
+    fig = plt.figure(figsize=(18, 7))
     plt.subplot(231)
     plt.imshow(muVBBL, cmap=cmap, extent=[x_min, x_max, y_min, y_max])
     plt.title("Mu VBBL", fontdict=font)
@@ -1255,7 +1256,7 @@ def pltlkv(ts, mus, params=None, label=None):
     tuple
         (main, gs) where main is the main axis and gs is the gridspec.
     """
-    plt.figure(figsize=(13, 7), dpi=100)
+    fig = plt.figure(figsize=(13, 7), dpi=100)
     gs = gridspec.GridSpec(2, 1, height_ratios=[5, 1])
     plt.subplots_adjust(top=0.95, bottom=0.1, right=0.95, left=0.15, hspace=0, wspace=0)
     main = plt.subplot(gs[0])
@@ -1743,7 +1744,8 @@ class ThreeLens1STripleLens:
         self.psi_rad = np.radians(psi_deg)
         self.tau = np.linspace(-2, 2, num_points)
         self.t = self.t0 + self.tau * self.tE
-        self.TRIL = TripleLensing()
+        # Initialize TripleLensing
+        TRIL = TripleLensing()
         self.colors = [plt.colormaps["BuPu"](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
         self.systems = self._prepare_systems()
 
