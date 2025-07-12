@@ -51,7 +51,6 @@ model.plot_light_curve()
 ## Documentation
 
 See the `docs/` directory for detailed documentation.
-
 This project uses a regular Python packaging workflow. To install the
 package and its minimal runtime dependencies, execute::
 

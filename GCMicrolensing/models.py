@@ -19,7 +19,8 @@ import VBMicrolensing
 from IPython.display import HTML
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
-from TestML import get_allimgs_with_mu, get_crit_caus, getphis_v3, testing
+
+from .TestML import get_allimgs_with_mu, get_crit_caus, getphis_v3, testing
 
 
 class OneL1S:
