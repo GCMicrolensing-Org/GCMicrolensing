@@ -106,7 +106,34 @@ autodoc_typehints = "description"
 autodoc_class_signature = "separated"
 
 # Mock imports for modules that require C++ compilation
-autodoc_mock_imports = ["TripleLensing", "VBMicrolensing"]
+autodoc_mock_imports = [
+    "TripleLensing",
+    "VBMicrolensing",
+    "GCMicrolensing.triplelens.TripleLensing",
+]
+
+# Prevent autodoc from trying to import modules that require compilation
+autodoc_default_options = {
+    "members": True,
+    "member-order": "bysource",
+    "special-members": "__init__",
+    "undoc-members": True,
+    "exclude-members": "__weakref__",
+}
+
+
+# Disable autodoc for problematic modules
+def skip_member(app, what, name, obj, skip, options):
+    """Skip problematic members during documentation generation."""
+    if "TripleLensing" in str(obj) or "VBMicrolensing" in str(obj):
+        return True
+    return skip
+
+
+def setup(app):
+    """Set up Sphinx extension."""
+    app.connect("autodoc-skip-member", skip_member)
+
 
 # -- Options for napoleon ---------------------------------------------------
 
