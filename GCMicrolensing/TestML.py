@@ -5,13 +5,14 @@ import math
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-import TripleLensing
 from IPython.display import HTML
 from matplotlib.animation import FuncAnimation, writers
 from mpl_toolkits import axes_grid1
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes as iax
 
-TRIL = TripleLensing.TripleLensing()
+from .triplelens import TripleLensing
+
+TRIL = TripleLensing()
 
 NLENS = 3
 DEGREE = NLENS**2 + 1
@@ -1742,7 +1743,7 @@ class ThreeLens1STripleLens:
         self.psi_rad = np.radians(psi_deg)
         self.tau = np.linspace(-2, 2, num_points)
         self.t = self.t0 + self.tau * self.tE
-        self.TRIL = TripleLensing.TripleLensing()
+        self.TRIL = TripleLensing()
         self.colors = [plt.colormaps["BuPu"](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
         self.systems = self._prepare_systems()
 

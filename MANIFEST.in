@@ -1,11 +1,11 @@
 # Include the triplelens directory for local installation
-recursive-include triplelens *
-prune triplelens/build
-prune triplelens/TripleLensing.egg-info
-prune triplelens/.eggs
-prune triplelens/var
-prune triplelens/notebooks
-prune triplelens/*.ipynb
+recursive-include GCMicrolensing/triplelens *
+prune GCMicrolensing/triplelens/build
+prune GCMicrolensing/triplelens/TripleLensing.egg-info
+prune GCMicrolensing/triplelens/.eggs
+prune GCMicrolensing/triplelens/var
+prune GCMicrolensing/triplelens/notebooks
+prune GCMicrolensing/triplelens/*.ipynb
 
 # Include documentation
 recursive-include docs *

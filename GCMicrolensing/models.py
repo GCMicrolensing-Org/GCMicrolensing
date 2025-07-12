@@ -14,13 +14,13 @@ import math
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
-import TripleLensing
 import VBMicrolensing
 from IPython.display import HTML
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
 from .TestML import get_allimgs_with_mu, get_crit_caus, getphis_v3, testing
+from .triplelens import TripleLensing
 
 
 class OneL1S:
@@ -927,7 +927,7 @@ class ThreeLens1SVBM:
         list[complex]
             Complex coordinates of the image positions.
         """
-        TRIL = TripleLensing.TripleLensing()
+        TRIL = TripleLensing()
         mlens = [1 - self.q2 - self.q3, self.q2, self.q3]
         zlens = self._compute_lens_positions()
         zlens_cpp_format = [coord for pair in zlens for coord in pair]
@@ -1179,7 +1179,7 @@ class ThreeLens1S:
         self.tau = np.linspace(-2, 2, num_points)
         self.t = self.t0 + self.tau * self.tE
 
-        self.TRIL = TripleLensing.TripleLensing()
+        self.TRIL = TripleLensing()
         self.colors = [plt.colormaps["BuPu"](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
         self.systems = self._prepare_systems()
 
