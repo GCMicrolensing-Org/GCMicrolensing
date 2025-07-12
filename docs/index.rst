@@ -7,8 +7,8 @@ Tools for simulating gravitational microlensing events with single, binary, and 
    :target: https://pypi.org/project/GCMicrolensing/
    :alt: PyPI version
 
-.. image:: https://github.com/GregCuautle/SURP25/actions/workflows/ci.yml/badge.svg
-   :target: https://github.com/GregCuautle/SURP25/actions/workflows/ci.yml
+.. image:: https://github.com/AmberLee2427/Costa/workflows/CI/badge.svg
+   :target: https://github.com/AmberLee2427/Costa/actions/workflows/ci.yml
    :alt: CI status
 
 .. image:: https://readthedocs.org/projects/gcmicrolensing/badge/?version=latest
