@@ -4,6 +4,11 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.10"
+  apt_packages:
+    - build-essential
+    - gcc
+    - g++
+    - cmake
 
 python:
   install:
