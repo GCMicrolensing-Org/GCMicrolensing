@@ -22,7 +22,14 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
     - name: Install build dependencies
-      run: python -m pip install --upgrade pip wheel build setuptools
+      run: |
+        python -m pip install --upgrade pip wheel build setuptools
+        python -m pip install pybind11 numpy
+
+    - name: Install package dependencies for build
+      run: |
+        python -m pip install -r requirements-dev.txt
+        python -m pip install VBMicrolensing>=5.0.0
 
     - name: Update version and citation files
       run: |
@@ -66,8 +73,8 @@ jobs:
 
           See the [documentation](https://gcmicrolensing.readthedocs.io/) for usage examples.
         files: |
-          dist/GCMicrolensing-${{ github.ref_name }}.tar.gz
-          dist/GCMicrolensing-${{ github.ref_name }}-py3-none-any.whl
+          dist/gcmicrolensing-${{ github.ref_name }}.tar.gz
+          dist/gcmicrolensing-${{ github.ref_name }}-py3-none-any.whl
 
   # Publish to TestPyPI
   publish-testpypi:
@@ -81,7 +88,11 @@ jobs:
       with:
         python-version: '3.12'
     - name: Install build dependencies
-      run: python -m pip install --upgrade pip wheel build setuptools twine
+      run: |
+        python -m pip install --upgrade pip wheel build setuptools twine
+        python -m pip install pybind11 numpy
+        python -m pip install -r requirements-dev.txt
+        python -m pip install VBMicrolensing>=5.0.0
     - name: Build package
       run: python -m build
     - name: Publish to TestPyPI
@@ -103,7 +114,11 @@ jobs:
       with:
         python-version: '3.12'
     - name: Install build dependencies
-      run: python -m pip install --upgrade pip wheel build setuptools twine
+      run: |
+        python -m pip install --upgrade pip wheel build setuptools twine
+        python -m pip install pybind11 numpy
+        python -m pip install -r requirements-dev.txt
+        python -m pip install VBMicrolensing>=5.0.0
     - name: Build package
       run: python -m build
     - name: Publish to PyPI
