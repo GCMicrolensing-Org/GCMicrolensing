@@ -1,35 +1,16 @@
-# Core package dependencies needed for autodoc
-numpy
-matplotlib
-pandas
-scipy
-seaborn
-astropy
-astroquery
-pyvo
-emcee
-corner
-requests
-tqdm
-pybind11
-jupyter
-ipywidgets
-setuptools
+# Minimal requirements for ReadTheDocs builds
+# These are the essential packages needed for documentation generation
 
-# Documentation dependencies
+# Core Sphinx
 sphinx>=5.0.0
 sphinx-rtd-theme>=1.0.0
+
+# Basic extensions
 nbsphinx>=0.8.0
 ipython>=8.0.0
-myst-parser>=0.18.0
-sphinx-autodoc-typehints>=1.19.0
-sphinx-gallery>=0.10.0
-sphinx-copybutton>=0.5.0
-sphinx-panels>=0.6.0
-sphinx-tabs>=3.0.0
-sphinxcontrib-bibtex>=2.4.0
-sphinxcontrib-mermaid>=0.7.0
 
-# Note: VBMicrolensing and TripleLensing are specialized microlensing libraries
-# that require C++ compilation. For documentation builds, these will be mocked
-# in docs/conf.py using autodoc_mock_imports.
+# Minimal runtime dependencies for autodoc
+numpy
+matplotlib
+scipy
+astropy
