@@ -30,4 +30,5 @@ sphinxcontrib-bibtex>=2.4.0
 sphinxcontrib-mermaid>=0.7.0
 
 # Note: VBMicrolensing and TripleLensing are specialized microlensing libraries
-# that require C++ compilation. For documentation builds, these will be mocked.
+# that require C++ compilation. For documentation builds, these will be mocked
+# in docs/conf.py using autodoc_mock_imports.
