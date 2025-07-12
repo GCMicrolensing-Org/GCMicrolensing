@@ -29,6 +29,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
+    "VBMicrolensing>=5.0.0",
     "numpy",
     "matplotlib",
     "pandas",
@@ -44,7 +45,6 @@ dependencies = [
     "pybind11",
     "jupyter",
     "ipywidgets",
-    "VBMicrolensing",
 ]
 
 [project.optional-dependencies]
@@ -55,6 +55,10 @@ dev = [
     "flake8>=5.0",
     "mypy>=1.0",
     "pre-commit>=2.0",
+    "isort>=5.0",
+    "bandit>=1.7.0",
+    "pydocstyle>=6.0",
+    "nbqa>=1.7.0",
 ]
 docs = [
     "sphinx>=5.0.0",
@@ -84,4 +88,4 @@ packages = ["GCMicrolensing"]
 GCMicrolensing = ["*.txt", "*.md", "*.rst"]
 
 # Note: TripleLensing dependency is handled in setup.py due to local file path
-# This is a limitation of pyproject.toml - it doesn't support file:// URLs well 
+# This is a limitation of pyproject.toml - it doesn't support file:// URLs well

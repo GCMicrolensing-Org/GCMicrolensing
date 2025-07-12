@@ -10,4 +10,4 @@ prune triplelens/*.ipynb
 # Include documentation
 recursive-include docs *
 recursive-include README.md
-recursive-include LICENSE 
+recursive-include LICENSE

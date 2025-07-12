@@ -1,8 +1,8 @@
 """Packaging script for the :mod:`GCMicrolensing` project."""
 
-import os
 from pathlib import Path
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 current_dir = Path(__file__).resolve().parent
 triplelens_path = current_dir / "triplelens"
@@ -26,7 +26,7 @@ setup(
         "matplotlib",
         "scipy",
         "astropy",
-        "VBMicrolensing",
+        "VBMicrolensing>=5.0.0",
         "pandas",
         f"TripleLensing @ file://{triplelens_path}",
     ],

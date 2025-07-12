@@ -134,7 +134,7 @@ PYBIND11_MODULE(TripleLensing, m) {
         self.triple_num_real_sol2py(mlens.data(),Zlens.data(),
                            y1s.data(), y2s.data(), true_solution_threshold, imgnums_mups.data(), y1s.size());
         return imgnums_mups;
-    }, 
+    },
     R"mydelimiter(
             Number of true images for a given set of parameters.
             Parameters

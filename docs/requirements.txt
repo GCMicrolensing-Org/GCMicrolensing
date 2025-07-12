@@ -30,4 +30,4 @@ sphinxcontrib-bibtex>=2.4.0
 sphinxcontrib-mermaid>=0.7.0
 
 # Note: VBMicrolensing and TripleLensing may need to be installed separately
-# as they are specialized microlensing libraries 
+# as they are specialized microlensing libraries

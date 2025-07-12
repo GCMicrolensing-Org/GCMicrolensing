@@ -52,7 +52,7 @@ namespace VBBinaryLensingLibrary {
 public ref class VBBinaryLensing
 #else
 class VBBinaryLensing
-#endif 
+#endif
 	{
 	int *ndatasat;
 	double **tsat, ***possat;
@@ -71,7 +71,7 @@ class VBBinaryLensing
 	void OrderImages(_sols *, _curve *);
 	void cmplx_laguerre(complex *, int, complex *, int &, bool &);
 	void cmplx_newton_spec(complex *, int, complex *, int &, bool &);
-	
+
 	void solve_quadratic_eq(complex &, complex &, complex *);
 	void solve_cubic_eq(complex &, complex &, complex &, complex *);
 

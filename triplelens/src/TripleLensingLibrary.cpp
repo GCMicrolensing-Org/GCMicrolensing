@@ -450,7 +450,7 @@ void TripleLensing::tripleFS2py(double mlens[], double Zlens[], double xsCenters
     }else{
         for (int i = 0; i < Np; i++) {
             mags[i] = TriplePS(xsCenters[i], ysCenters[i]);
-        }        
+        }
     }
 
 }
@@ -565,7 +565,7 @@ void TripleLensing::TriLightCurve(double *pr, double *mags, double *y1s, double 
     }else{
         for (int i = 0; i < np; i++) {
             mags[i] = TriplePS(y1s[i], y2s[i]);
-        }        
+        }
     }
 
 }
@@ -581,7 +581,7 @@ void TripleLensing::outputCriticalTriple_list(double allxys[], double mlens[], d
 
 void TripleLensing::outputCriticalBinary_list(double resxy[], double s, double q, int NPS){
     VBBinaryLensing VBBL;
-    VBBL.outputCriticalBinary_list(resxy, s, q, NPS);    
+    VBBL.outputCriticalBinary_list(resxy, s, q, NPS);
 }
 
 
@@ -652,7 +652,7 @@ double TripleLensing::TripleMag(double xsCenter, double ysCenter, double rs) {
 // #endif
 //         ifFinite = 0;
 //         return muPS;
-//     } 
+//     }
 
     if ( CQ * quad_err <= 1e-1 * quaderr_Tol) {
 #ifdef VERBOSE
@@ -1451,7 +1451,7 @@ _sols *TripleLensing::outputTracks_v2_savehalf(double xsCenter, double ysCenter,
     // double SD, MD, CD;
 
     // connect all images, including fake images, initialize ten _curve object to save solutions from polynomial solving
-    
+
     for (int i = 0; i < DEGREE; i++) {
         Prov = new _curve;
         allSolutions->append(Prov);
@@ -3338,7 +3338,7 @@ _sols *TripleLensing::outputTracks_v2_savehalf(double xsCenter, double ysCenter,
                 Prov = NULL;
                 delete Prov;
                 delete tempProv;
-                delete Prov2;                                
+                delete Prov2;
                 return connected;
             }
             while (ifkeep_connect) {

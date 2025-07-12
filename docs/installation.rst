@@ -85,7 +85,7 @@ These are specialized microlensing libraries that may need to be installed separ
 
    # Install VBMicrolensing
    pip install VBMicrolensing
-   
+
    # Install TripleLensing (if available)
    pip install TripleLensing
 
@@ -127,4 +127,67 @@ For developers who want to contribute to the project:
    pip install -e ".[dev]"
    pip install -r requirements-dev.txt
 
-This installs additional development dependencies for testing and documentation building. 
+This installs additional development dependencies for testing and documentation building.
+
+Pre-commit Setup
+~~~~~~~~~~~~~~~
+
+To ensure code quality and consistency, set up pre-commit hooks:
+
+.. code-block:: bash
+
+   # Install pre-commit hooks
+   pre-commit install
+
+   # Run all hooks on all files (optional)
+   pre-commit run --all-files
+
+The pre-commit configuration includes:
+- **Code formatting**: Black for consistent code style
+- **Import sorting**: isort for organized imports
+- **Linting**: flake8 for code quality checks
+- **Type checking**: mypy for type safety
+- **Security checks**: bandit for security vulnerabilities
+- **Documentation**: pydocstyle for docstring consistency
+- **Notebook formatting**: nbQA for Jupyter notebooks
+
+These hooks will run automatically on every commit to ensure code quality.
+
+Release Checklist
+================
+
+Follow these steps for each new release:
+
+1. **Bump the version**
+   - Update the version in `pyproject.toml` and `setup.py`.
+   - Update the version and date in `CITATION.cff`.
+   - Optionally update the version in `README.md` and documentation.
+
+2. **Update citation and metadata**
+   - Ensure `CITATION.cff` has the correct version, date, and DOI (if using Zenodo).
+   - Add any new recommended citations for dependencies if needed.
+
+3. **Commit and tag**
+   - Commit all changes: `git commit -am "Release vX.Y.Z"`
+   - Tag the release: `git tag vX.Y.Z`
+   - Push: `git push && git push --tags`
+
+4. **Create a GitHub Release**
+   - Go to the GitHub Releases page and publish the new tag.
+
+5. **Publish to PyPI**
+   - Build and upload: `python -m build && twine upload dist/*`
+
+6. **Check CI and documentation**
+   - Ensure CI passes and ReadTheDocs builds the new docs.
+
+7. **Verify badges**
+   - Confirm that PyPI, CI, and ReadTheDocs badges are up to date in the README and docs.
+
+Automated workflows will help with some of these steps, but always double-check before publishing!
+
+---
+
+.. include:: ../README.md
+   :start-after: # Installation
+   :end-before: # Usage

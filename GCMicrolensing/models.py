@@ -9,15 +9,18 @@ The implementations rely heavily on the `VBMicrolensing` and
 and magnifications.
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from matplotlib.gridspec import GridSpec
-from IPython.display import HTML, display
-import VBMicrolensing
-import TripleLensing
 import math
+
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import numpy as np
+import TripleLensing
+import VBMicrolensing
+from IPython.display import HTML
+from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
+from TestML import get_allimgs_with_mu, get_crit_caus, getphis_v3, testing
+
 
 class OneL1S:
     """Simple single-lens single-source (1L1S) model.
@@ -43,7 +46,7 @@ class OneL1S:
 
         self.t0 = t0
         self.tE = tE
-        self.t = np.linspace(t0-tE, t0+tE, 50)
+        self.t = np.linspace(t0 - tE, t0 + tE, 50)
         self.rho = rho
         self.u0_list = u0_list
         self.tau = (self.t - t0) / tE
@@ -61,9 +64,9 @@ class OneL1S:
         ax : matplotlib.axes.Axes
             Axis instance to plot on.
         """
-        cmap_es = plt.colormaps['BuPu']
+        cmap_es = plt.colormaps["BuPu"]
         colors_es = [cmap_es(i) for i in np.linspace(0.5, 1.0, len(self.u0_list))]
-        cmap_ps = plt.colormaps['binary']
+        cmap_ps = plt.colormaps["binary"]
         colors_ps = [cmap_ps(i) for i in np.linspace(0.5, 1.0, len(self.u0_list))]
 
         for idx, u0 in enumerate(self.u0_list):
@@ -73,8 +76,15 @@ class OneL1S:
             pspl_mag = [self.VBM.PSPLMag(ui) for ui in u]
             espl_mag = [self.VBM.ESPLMag2(ui, self.rho) for ui in u]
 
-            ax.plot(self.tau, espl_mag, '-', color=color_es, label=f'ESPL $u_0$ = {u0}')
-            ax.plot(self.tau, pspl_mag, '--', color=color_ps, label=f'PSPL $u_0$ = {u0}', alpha=0.7)
+            ax.plot(self.tau, espl_mag, "-", color=color_es, label=f"ESPL $u_0$ = {u0}")
+            ax.plot(
+                self.tau,
+                pspl_mag,
+                "--",
+                color=color_ps,
+                label=f"PSPL $u_0$ = {u0}",
+                alpha=0.7,
+            )
 
         ax.set_xlabel(r"Time ($\tau$)")
         ax.set_ylabel("Magnification")
@@ -90,14 +100,14 @@ class OneL1S:
         ax : matplotlib.axes.Axes
             Axis to draw the centroid shift curve on.
         """
-        cmap_cs = plt.colormaps['BuPu']
+        cmap_cs = plt.colormaps["BuPu"]
         colors_cs = [cmap_cs(i) for i in np.linspace(0.5, 1.0, len(self.u0_list))]
 
         for idx, u0 in enumerate(self.u0_list):
             color_cs = colors_cs[idx]
             u = np.sqrt(u0**2 + self.tau**2)
             centroid_shift = [self.VBM.astrox1 - ui for ui in u]
-            ax.plot(self.tau, centroid_shift, color=color_cs, label=f'$u_0$ = {u0}')
+            ax.plot(self.tau, centroid_shift, color=color_cs, label=f"$u_0$ = {u0}")
 
         ax.set_xlabel(r"Time ($\tau$)")
         ax.set_ylabel(r"Centroid Shift ($\Delta \theta$)")
@@ -119,13 +129,13 @@ class OneL1S:
 
     def animate(self):
         """Return a HTML animation of the event."""
-        return self._create_animation(figsize=(6, 6), layout='single')
+        return self._create_animation(figsize=(6, 6), layout="single")
 
     def show_all(self):
         """Return an animation with light curve and centroid shift."""
-        return self._create_animation(figsize=(14, 6), layout='grid')
+        return self._create_animation(figsize=(14, 6), layout="grid")
 
-    def _create_animation(self, figsize=(6, 6), layout='single'):
+    def _create_animation(self, figsize=(6, 6), layout="single"):
         """Construct an animation of the microlensing event.
 
         Parameters
@@ -143,7 +153,7 @@ class OneL1S:
         """
         tau = self.tau
         n = len(self.t)
-        colors = [plt.colormaps['BuPu'](i) for i in np.linspace(0.5, 1.0, len(self.u0_list))]
+        colors = [plt.colormaps["BuPu"](i) for i in np.linspace(0.5, 1.0, len(self.u0_list))]
 
         systems = []
         for u0, color in zip(self.u0_list, colors):
@@ -151,9 +161,17 @@ class OneL1S:
             y_source = np.full_like(tau, u0)
             u = np.sqrt(x_source**2 + y_source**2)
             espl_mag = [self.VBM.ESPLMag2(ui, self.rho) for ui in u]
-            systems.append({'u0': u0, 'x': x_source, 'y': y_source, 'mag': espl_mag, 'color': color})
+            systems.append(
+                {
+                    "u0": u0,
+                    "x": x_source,
+                    "y": y_source,
+                    "mag": espl_mag,
+                    "color": color,
+                }
+            )
 
-        if layout == 'grid':
+        if layout == "grid":
             fig = plt.figure(figsize=figsize)
             gs = GridSpec(2, 2, width_ratios=[1, 1])
             ax_anim = fig.add_subplot(gs[:, 0])
@@ -171,29 +189,33 @@ class OneL1S:
         ax_anim.set_title("Single-Lens Microlensing Events")
         ax_anim.grid(True)
         ax_anim.set_aspect("equal")
-        ax_anim.plot([0], [0], 'ko', label="Lens")
-        einstein_ring = plt.Circle((0, 0), 1, color='green', fill=False, linestyle='--', linewidth=1.5)
+        ax_anim.plot([0], [0], "ko", label="Lens")
+        einstein_ring = plt.Circle(
+            (0, 0), 1, color="green", fill=False, linestyle="--", linewidth=1.5
+        )
         ax_anim.add_patch(einstein_ring)
 
         source_dots, img_dots, trails_1, trails_2, trail_data = [], [], [], [], []
 
         for system in systems:
-            s_dot, = ax_anim.plot([], [], '*', color=system['color'], label=f"$u_0$ = {system['u0']}")
-            i_dot = ax_anim.scatter([], [], color=system['color'], s=20)
-            t1 = ax_anim.scatter([], [], color=system['color'], alpha=0.3)
-            t2 = ax_anim.scatter([], [], color=system['color'], alpha=0.3)
+            (s_dot,) = ax_anim.plot(
+                [], [], "*", color=system["color"], label=f"$u_0$ = {system['u0']}"
+            )
+            i_dot = ax_anim.scatter([], [], color=system["color"], s=20)
+            t1 = ax_anim.scatter([], [], color=system["color"], alpha=0.3)
+            t2 = ax_anim.scatter([], [], color=system["color"], alpha=0.3)
             source_dots.append(s_dot)
             img_dots.append(i_dot)
             trails_1.append(t1)
             trails_2.append(t2)
-            trail_data.append({'x1': [], 'y1': [], 's1': [], 'x2': [], 'y2': [], 's2': []})
+            trail_data.append({"x1": [], "y1": [], "s1": [], "x2": [], "y2": [], "s2": []})
 
-        ax_anim.legend(loc='lower left')
+        ax_anim.legend(loc="lower left")
 
         def update(frame):
             for i, system in enumerate(systems):
-                x_s = system['x'][frame]
-                y_s = system['y'][frame]
+                x_s = system["x"][frame]
+                y_s = system["y"][frame]
                 u = np.sqrt(x_s**2 + y_s**2)
                 theta = np.arctan2(y_s, x_s)
                 r_plus = (u + np.sqrt(u**2 + 4)) / 2
@@ -206,28 +228,29 @@ class OneL1S:
 
                 source_dots[i].set_data([x_s], [y_s])
                 img_dots[i].set_offsets([[x1, y1], [x2, y2]])
-                mag = system['mag'][frame]
+                mag = system["mag"][frame]
                 size = 20 * mag
                 img_dots[i].set_sizes([size, size])
 
-                trail_data[i]['x1'].append(x1)
-                trail_data[i]['y1'].append(y1)
-                trail_data[i]['s1'].append(size)
-                trail_data[i]['x2'].append(x2)
-                trail_data[i]['y2'].append(y2)
-                trail_data[i]['s2'].append(size)
+                trail_data[i]["x1"].append(x1)
+                trail_data[i]["y1"].append(y1)
+                trail_data[i]["s1"].append(size)
+                trail_data[i]["x2"].append(x2)
+                trail_data[i]["y2"].append(y2)
+                trail_data[i]["s2"].append(size)
 
-                trails_1[i].set_offsets(np.column_stack([trail_data[i]['x1'], trail_data[i]['y1']]))
-                trails_1[i].set_sizes(trail_data[i]['s1'])
-                trails_2[i].set_offsets(np.column_stack([trail_data[i]['x2'], trail_data[i]['y2']]))
-                trails_2[i].set_sizes(trail_data[i]['s2'])
+                trails_1[i].set_offsets(np.column_stack([trail_data[i]["x1"], trail_data[i]["y1"]]))
+                trails_1[i].set_sizes(trail_data[i]["s1"])
+                trails_2[i].set_offsets(np.column_stack([trail_data[i]["x2"], trail_data[i]["y2"]]))
+                trails_2[i].set_sizes(trail_data[i]["s2"])
 
             return source_dots + img_dots + trails_1 + trails_2
 
         ani = animation.FuncAnimation(fig, update, frames=n, interval=50, blit=True)
         plt.tight_layout()
         return HTML(ani.to_jshtml())
-    
+
+
 class TwoLens1S:
     """Binary-lens, single-source (2L1S) model.
 
@@ -276,19 +299,20 @@ class TwoLens1S:
         self.VBM.RelTol = 1e-3
         self.VBM.Tol = 1e-3
         self.VBM.astrometry = True
-        self.colors = [plt.colormaps['BuPu'](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
+        self.colors = [plt.colormaps["BuPu"](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
         self.systems = self._prepare_systems()
 
     def _prepare_systems(self):
         """Precompute source trajectories and magnifications."""
-
         systems = []
 
         def polygon_area(x, y):
             return 0.5 * np.abs(np.dot(x, np.roll(y, -1)) - np.dot(y, np.roll(x, -1)))
 
-        for u0, color in zip(self.u0_list, self.colors): 
-            x_src = self.tau * np.cos(self.theta) - u0 * np.sin(self.theta) #for animation (lower resolution) 
+        for u0, color in zip(self.u0_list, self.colors):
+            x_src = self.tau * np.cos(self.theta) - u0 * np.sin(
+                self.theta
+            )  # for animation (lower resolution)
             y_src = self.tau * np.sin(self.theta) + u0 * np.cos(self.theta)
 
             cent_x = []
@@ -325,7 +349,9 @@ class TwoLens1S:
                 cent_x.append(cx_weighted)
                 cent_y.append(cy_weighted)
 
-            x_src_hr = self.tau_hr * np.cos(self.theta) - u0 * np.sin(self.theta) #for centroid shift, higher resolution
+            x_src_hr = self.tau_hr * np.cos(self.theta) - u0 * np.sin(
+                self.theta
+            )  # for centroid shift, higher resolution
             y_src_hr = self.tau_hr * np.sin(self.theta) + u0 * np.cos(self.theta)
 
             cent_x_hr = []
@@ -361,50 +387,70 @@ class TwoLens1S:
                 cent_y_hr.append(cy_weighted)
 
             mag, *_ = self.VBM.BinaryLightCurve(
-                [math.log(self.s), math.log(self.q), u0, self.theta, math.log(self.rho), math.log(self.tE), self.t0],
-                self.t)
+                [
+                    math.log(self.s),
+                    math.log(self.q),
+                    u0,
+                    self.theta,
+                    math.log(self.rho),
+                    math.log(self.tE),
+                    self.t0,
+                ],
+                self.t,
+            )
 
-            systems.append({
-                'u0': u0,
-                'color': color,
-                'mag': mag,
-                'x_src': x_src,
-                'y_src': y_src,
-                'cent_x': np.array(cent_x),
-                'cent_y': np.array(cent_y),
-                'x_src_hr': x_src_hr,
-                'y_src_hr': y_src_hr,
-                'cent_x_hr': np.array(cent_x_hr),
-                'cent_y_hr': np.array(cent_y_hr),
-            })
+            systems.append(
+                {
+                    "u0": u0,
+                    "color": color,
+                    "mag": mag,
+                    "x_src": x_src,
+                    "y_src": y_src,
+                    "cent_x": np.array(cent_x),
+                    "cent_y": np.array(cent_y),
+                    "x_src_hr": x_src_hr,
+                    "y_src_hr": y_src_hr,
+                    "cent_x_hr": np.array(cent_x_hr),
+                    "cent_y_hr": np.array(cent_y_hr),
+                }
+            )
 
         return systems
-    
+
     def plot_caustic_critical_curves(self):
         """Plot caustics and critical curves for the binary lens."""
         caustics = self.VBM.Caustics(self.s, self.q)
         criticalcurves = self.VBM.Criticalcurves(self.s, self.q)
 
-        lens_handle = Line2D([0], [0], marker='o', color='k', linestyle='None', label='Lens', markersize=6)
-        caustic_handle = Line2D([0], [0], color='r', lw=1.2, label='Caustic')
-        crit_curve_handle = Line2D([0], [0], color='k', linestyle='--', lw=0.8, label='Critical Curve')
-        q_handle = Line2D([0], [0], color='k', linestyle='None', label=fr"$q$ = {self.q}")
-        s_handle = Line2D([0], [0], color='k', linestyle='None', label=fr"$s$ = {self.s}")
-                          
+        lens_handle = Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="k",
+            linestyle="None",
+            label="Lens",
+            markersize=6,
+        )
+        caustic_handle = Line2D([0], [0], color="r", lw=1.2, label="Caustic")
+        crit_curve_handle = Line2D(
+            [0], [0], color="k", linestyle="--", lw=0.8, label="Critical Curve"
+        )
+        q_handle = Line2D([0], [0], color="k", linestyle="None", label=rf"$q$ = {self.q}")
+        s_handle = Line2D([0], [0], color="k", linestyle="None", label=rf"$s$ = {self.s}")
 
         plt.figure(figsize=(6, 6))
 
         for cau in caustics:
-            plt.plot(cau[0], cau[1], 'r', lw=1.2)
+            plt.plot(cau[0], cau[1], "r", lw=1.2)
         for crit in criticalcurves:
-            plt.plot(crit[0], crit[1], 'k--', lw=0.8)
+            plt.plot(crit[0], crit[1], "k--", lw=0.8)
 
         x1 = -self.s * self.q / (1 + self.q)
         x2 = self.s / (1 + self.q)
-        plt.plot([x1, x2], [0, 0], 'ko')
+        plt.plot([x1, x2], [0, 0], "ko")
 
         for system in self.systems:
-            plt.plot(system['x_src'], system['y_src'], '--', color=system['color'], alpha=0.6)
+            plt.plot(system["x_src"], system["y_src"], "--", color=system["color"], alpha=0.6)
 
         plt.xlim(-2, 2)
         plt.ylim(-2, 2)
@@ -413,24 +459,39 @@ class TwoLens1S:
         plt.title("2L1S Lensing Event")
         plt.gca().set_aspect("equal")
         plt.grid(True)
-        plt.legend(handles=[lens_handle, caustic_handle, crit_curve_handle, q_handle, s_handle], loc='upper right', prop={'size': 8})
+        plt.legend(
+            handles=[
+                lens_handle,
+                caustic_handle,
+                crit_curve_handle,
+                q_handle,
+                s_handle,
+            ],
+            loc="upper right",
+            prop={"size": 8},
+        )
         plt.tight_layout()
         plt.show()
 
     def plot_light_curve(self):
         """Plot the binary-lens light curve."""
         plt.figure(figsize=(6, 4))
-        
+
         for system in self.systems:
-            plt.plot(self.tau, system['mag'], color=system['color'], label=fr"$u_0$ = {system['u0']}")
-        
+            plt.plot(
+                self.tau,
+                system["mag"],
+                color=system["color"],
+                label=rf"$u_0$ = {system['u0']}",
+            )
+
         plt.xlabel(r"Time ($\tau$)")
         plt.ylabel("Magnification")
         plt.title("Light Curve")
         plt.grid(True)
         plt.legend()
         plt.tight_layout()
-        plt.show()    
+        plt.show()
 
     def animate(self):
         """Return an animation showing the event evolution.
@@ -446,11 +507,21 @@ class TwoLens1S:
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
         fig.subplots_adjust(wspace=0.4)
 
-        lens_handle = Line2D([0], [0], marker='o', color='k', linestyle='None', label='Lens', markersize=6)
-        caustic_handle = Line2D([0], [0], color='r', lw=1.2, label='Caustic')
-        crit_curve_handle = Line2D([0], [0], color='k', linestyle='--', lw=0.8, label='Critical Curve')
-        q_handle = Line2D([0], [0], color='k', linestyle='None', label=fr"$q$ = {self.q}")
-        s_handle = Line2D([0], [0], color='k', linestyle='None', label=fr"$s$ = {self.s}")
+        lens_handle = Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="k",
+            linestyle="None",
+            label="Lens",
+            markersize=6,
+        )
+        caustic_handle = Line2D([0], [0], color="r", lw=1.2, label="Caustic")
+        crit_curve_handle = Line2D(
+            [0], [0], color="k", linestyle="--", lw=0.8, label="Critical Curve"
+        )
+        q_handle = Line2D([0], [0], color="k", linestyle="None", label=rf"$q$ = {self.q}")
+        s_handle = Line2D([0], [0], color="k", linestyle="None", label=rf"$s$ = {self.s}")
 
         ax1.set_xlim(-2, 2)
         ax1.set_ylim(-2, 2)
@@ -461,57 +532,74 @@ class TwoLens1S:
         ax1.grid(True)
 
         for cau in caustics:
-            ax1.plot(cau[0], cau[1], 'r', lw=1.2)
+            ax1.plot(cau[0], cau[1], "r", lw=1.2)
         for crit in criticalcurves:
-            ax1.plot(crit[0], crit[1], 'k--', lw=0.8)
+            ax1.plot(crit[0], crit[1], "k--", lw=0.8)
 
-        x1 = -self.s * self.q / (1 + self.q)
-        x2 = self.s / (1 + self.q)
-        ax1.legend(handles=[lens_handle, caustic_handle, crit_curve_handle, q_handle, s_handle], loc='upper right', prop={'size': 8})
+        ax1.plot([-self.s * self.q / (1 + self.q), self.s / (1 + self.q)], [0, 0], "ko")
 
-        source_dots, centroid_dots = [], []
+        ax1.legend(
+            handles=[
+                lens_handle,
+                caustic_handle,
+                crit_curve_handle,
+                q_handle,
+                s_handle,
+            ],
+            loc="upper right",
+            prop={"size": 8},
+        )
+
+        source_dots = []
         for system in self.systems:
-            ax1.plot(system['x_src'], system['y_src'], '--', color=system['color'], alpha=0.4)
-            src_dot, = ax1.plot([], [], '*', color=system['color'], markersize=10)
-            #cen_dot, = ax1.plot([], [], 'x', color=system['color'], markersize=6, label=f"$u_0$ = {system['u0']}")
+            ax1.plot(system["x_src"], system["y_src"], "--", color=system["color"], alpha=0.4)
+            (src_dot,) = ax1.plot([], [], "*", color=system["color"], markersize=10)
+            # cen_dot, = ax1.plot(
+            #     [], [], 'x', color=system['color'], markersize=6,
+            #     label=f"$u_0$ = {system['u0']}"
+            # )
             source_dots.append(src_dot)
-            #centroid_dots.append(cen_dot)
-        ax1.legend(loc='lower right')
+            # centroid_dots.append(cen_dot)
+        ax1.legend(loc="lower right")
 
-        
         ax2.set_xlim(self.tau[0], self.tau[-1])
-        all_mag = np.concatenate([s['mag'] for s in self.systems])
-        ax2.set_ylim(min(all_mag)*0.95, max(all_mag)*1.05)
+        all_mag = np.concatenate([s["mag"] for s in self.systems])
+        ax2.set_ylim(min(all_mag) * 0.95, max(all_mag) * 1.05)
         ax2.set_xlabel(r"Time ($\tau$)")
         ax2.set_ylabel("Magnification")
         ax2.set_title("Light Curve")
 
         tracer_dots = []
         for system in self.systems:
-            ax2.plot(self.tau, system['mag'], color=system['color'], label=f"$u_0$ = {system['u0']}")
-            dot, = ax2.plot([], [], 'o', color=system['color'], markersize=6)
+            ax2.plot(
+                self.tau,
+                system["mag"],
+                color=system["color"],
+                label=f"$u_0$ = {system['u0']}",
+            )
+            (dot,) = ax2.plot([], [], "o", color=system["color"], markersize=6)
             tracer_dots.append(dot)
         ax2.legend()
 
         image_dots = []
         for system in self.systems:
             system_dots = []
-            for _ in range(5): 
-                img_dot, = ax1.plot([], [], '.', color=system['color'], alpha=0.6, markersize=4)
+            for _ in range(5):
+                (img_dot,) = ax1.plot([], [], ".", color=system["color"], alpha=0.6, markersize=4)
                 system_dots.append(img_dot)
             image_dots.append(system_dots)
 
         def update(i):
             artists = []
             for j, system in enumerate(self.systems):
-                x_src = system['x_src'][i]
-                y_src = system['y_src'][i]
+                x_src = system["x_src"][i]
+                y_src = system["y_src"][i]
 
                 source_dots[j].set_data([x_src], [y_src])
-                tracer_dots[j].set_data([self.tau[i]], [system['mag'][i]])
+                tracer_dots[j].set_data([self.tau[i]], [system["mag"][i]])
                 artists.extend([source_dots[j], tracer_dots[j]])
-                
-                images = self.VBM.ImageContours(self.s, self.q, x_src, y_src, self.rho)
+
+                images = self.VBM.ImageContours(self.s, self.q, x_s, y_s, self.rho)
 
                 for k, img_dot in enumerate(image_dots[j]):
                     if k < len(images):
@@ -527,15 +615,20 @@ class TwoLens1S:
         ani = animation.FuncAnimation(fig, update, frames=len(self.t), interval=50, blit=True)
         plt.close(fig)
         return HTML(ani.to_jshtml())
-    
+
     def plot_centroid_trajectory(self):
         """Plot the centroid trajectory for each ``u0`` value."""
         plt.figure(figsize=(6, 6))
         for system in self.systems:
-            delta_x = system['cent_x_hr'] - system['x_src_hr']
-            delta_y = system['cent_y_hr'] - system['y_src_hr']
-            plt.plot(delta_x, delta_y, color=system['color'], label=fr"$u_0$ = {system['u0']}")
-        plt.xlim(-0.4, .8)    
+            delta_x = system["cent_x_hr"] - system["x_src_hr"]
+            delta_y = system["cent_y_hr"] - system["y_src_hr"]
+            plt.plot(
+                delta_x,
+                delta_y,
+                color=system["color"],
+                label=rf"$u_0$ = {system['u0']}",
+            )
+        plt.xlim(-0.4, 0.8)
         plt.ylim(-0.4, 0.5)
         plt.xlabel(r"$\delta \Theta_1$")
         plt.ylabel(r"$\delta \Theta_2$")
@@ -550,11 +643,16 @@ class TwoLens1S:
         """Plot the centroid shift amplitude over time."""
         plt.figure(figsize=(6, 4))
         for system in self.systems:
-            delta_x = system['cent_x_hr'] - system['x_src_hr']
-            delta_y = system['cent_y_hr'] - system['y_src_hr']
+            delta_x = system["cent_x_hr"] - system["x_src_hr"]
+            delta_y = system["cent_y_hr"] - system["y_src_hr"]
             delta_theta = np.sqrt(delta_x**2 + delta_y**2)
-            plt.plot(self.tau_hr, delta_theta, color=system['color'], label=fr"$u_0$ = {system['u0']}")
-        
+            plt.plot(
+                self.tau_hr,
+                delta_theta,
+                color=system["color"],
+                label=rf"$u_0$ = {system['u0']}",
+            )
+
         plt.xlabel(r"Time ($\tau$)")
         plt.ylabel(r"$|\delta \vec{\Theta}|$")
         plt.title(r"Centroid Shift over Time ($\tau$)")
@@ -565,7 +663,6 @@ class TwoLens1S:
 
     def show_all(self):
         """Display a grid of animations and plots."""
-
         fig = plt.figure(figsize=(9, 9), constrained_layout=True)
         gs = GridSpec(2, 2, figure=fig)
 
@@ -574,11 +671,21 @@ class TwoLens1S:
         caustics = self.VBM.Caustics(self.s, self.q)
         criticalcurves = self.VBM.Criticalcurves(self.s, self.q)
 
-        lens_handle = Line2D([0], [0], marker='o', color='k', linestyle='None', label='Lens', markersize=6)
-        caustic_handle = Line2D([0], [0], color='r', lw=1.2, label='Caustic')
-        crit_curve_handle = Line2D([0], [0], color='k', linestyle='--', lw=0.8, label='Critical Curve')
-        q_handle = Line2D([0], [0], color='k', linestyle='None', label=fr"$q$ = {self.q}")
-        s_handle = Line2D([0], [0], color='k', linestyle='None', label=fr"$s$ = {self.s}")
+        lens_handle = Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="k",
+            linestyle="None",
+            label="Lens",
+            markersize=6,
+        )
+        caustic_handle = Line2D([0], [0], color="r", lw=1.2, label="Caustic")
+        crit_curve_handle = Line2D(
+            [0], [0], color="k", linestyle="--", lw=0.8, label="Critical Curve"
+        )
+        q_handle = Line2D([0], [0], color="k", linestyle="None", label=rf"$q$ = {self.q}")
+        s_handle = Line2D([0], [0], color="k", linestyle="None", label=rf"$s$ = {self.s}")
 
         ax1.set_xlim(-2, 2)
         ax1.set_ylim(-2, 2)
@@ -586,82 +693,97 @@ class TwoLens1S:
         ax1.grid(True)
         ax1.set_title("2L1S Lensing Event")
         for cau in caustics:
-            ax1.plot(cau[0], cau[1], 'r', lw=1.2)
+            ax1.plot(cau[0], cau[1], "r", lw=1.2)
         for crit in criticalcurves:
-            ax1.plot(crit[0], crit[1], 'k--', lw=0.8)
+            ax1.plot(crit[0], crit[1], "k--", lw=0.8)
         x1 = -self.s * self.q / (1 + self.q)
         x2 = self.s / (1 + self.q)
-        ax1.plot([x1, x2], [0, 0], 'ko')
+        ax1.plot([x1, x2], [0, 0], "ko")
         ax1.set_ylabel(r"Y ($\theta_E$)")
         ax1.set_xlabel(r"X ($\theta_E$)")
-        ax1.legend(handles=[lens_handle, caustic_handle, crit_curve_handle, q_handle, s_handle], loc='upper right', prop={'size': 8})
+        ax1.legend(
+            handles=[
+                lens_handle,
+                caustic_handle,
+                crit_curve_handle,
+                q_handle,
+                s_handle,
+            ],
+            loc="upper right",
+            prop={"size": 8},
+        )
 
         source_dots, tracer_dots, image_dots = [], [], []
         for system in self.systems:
-            ax1.plot(system['x_src'], system['y_src'], '--', color=system['color'], alpha=0.4)
-            src_dot, = ax1.plot([], [], '*', color=system['color'], markersize=10)
+            ax1.plot(system["x_src"], system["y_src"], "--", color=system["color"], alpha=0.4)
+            (src_dot,) = ax1.plot([], [], "*", color=system["color"], markersize=10)
             source_dots.append(src_dot)
 
             dots = []
             for _ in range(5):
-                dot, = ax1.plot([], [], '.', color=system['color'], alpha=0.6, markersize=4)
+                (dot,) = ax1.plot([], [], ".", color=system["color"], alpha=0.6, markersize=4)
                 dots.append(dot)
             image_dots.append(dots)
 
         # --- Top Right: Light Curve ---
         ax2 = fig.add_subplot(gs[0, 1])
         ax2.set_xlim(self.tau[0], self.tau[-1])
-        all_mag = np.concatenate([s['mag'] for s in self.systems])
-        ax2.set_ylim(min(all_mag)*0.95, max(all_mag)*1.05)
+        all_mag = np.concatenate([s["mag"] for s in self.systems])
+        ax2.set_ylim(min(all_mag) * 0.95, max(all_mag) * 1.05)
         ax2.set_ylabel("Magnification")
         ax2.set_title("Light Curve")
         ax2.set_xlabel(r"Time ($\tau$)")
 
         for system in self.systems:
-            ax2.plot(self.tau, system['mag'], color=system['color'], label=fr"$u_0$ = {system['u0']}")
-            dot, = ax2.plot([], [], 'o', color=system['color'], markersize=6)
+            ax2.plot(
+                self.tau,
+                system["mag"],
+                color=system["color"],
+                label=rf"$u_0$ = {system['u0']}",
+            )
+            (dot,) = ax2.plot([], [], "o", color=system["color"], markersize=6)
             tracer_dots.append(dot)
-            ax2.legend(prop={'size': 8})
+            ax2.legend(prop={"size": 8})
 
         # --- Bottom Left: Centroid Trajectory ---
         ax3 = fig.add_subplot(gs[1, 0])
         ax3.set_box_aspect(1)
 
         for system in self.systems:
-            dx = system['cent_x_hr'] - system['x_src_hr']
-            dy = system['cent_y_hr'] - system['y_src_hr']
-            ax3.plot(dx, dy, color=system['color'], label=fr"$\rho$ = {self.rho}")
-        #ax3.set_xlim(-1, 1)
-        #ax3.set_ylim(-1, 1)
+            dx = system["cent_x_hr"] - system["x_src_hr"]
+            dy = system["cent_y_hr"] - system["y_src_hr"]
+            ax3.plot(dx, dy, color=system["color"], label=rf"$\rho$ = {self.rho}")
+        # ax3.set_xlim(-1, 1)
+        # ax3.set_ylim(-1, 1)
         ax3.set_title("Centroid Shift Trajectory")
         ax3.set_xlabel(r"$\delta \Theta_1$")
         ax3.set_ylabel(r"$\delta \Theta_2$")
         ax3.grid(True)
         ax3.set_aspect("equal")
-        ax3.legend(prop={'size': 8})
+        ax3.legend(prop={"size": 8})
 
         # --- Bottom Right: Centroid Shift vs Tau ---
         ax4 = fig.add_subplot(gs[1, 1])
         for system in self.systems:
-            dx = system['cent_x_hr'] - system['x_src_hr']
-            dy = system['cent_y_hr'] - system['y_src_hr']
+            dx = system["cent_x_hr"] - system["x_src_hr"]
+            dy = system["cent_y_hr"] - system["y_src_hr"]
             dtheta = np.sqrt(dx**2 + dy**2)
-            ax4.plot(self.tau_hr, dtheta, color=system['color'])
+            ax4.plot(self.tau_hr, dtheta, color=system["color"])
         ax4.set_xlabel(r"Time ($\tau$)")
         ax4.set_ylabel(r"$|\delta \vec{\Theta}|$")
         ax4.set_title(r"Centroid Shift over Time ($\tau$)")
         ax4.grid(True)
-    
-        #fig.subplots_adjust(hspace=0.2, wspace=0.2)    
+
+        # fig.subplots_adjust(hspace=0.2, wspace=0.2)
 
         # --- Animate function ---
         def update(i):
             artists = []
             for j, system in enumerate(self.systems):
-                x_s = system['x_src'][i]
-                y_s = system['y_src'][i]
+                x_s = system["x_src"][i]
+                y_s = system["y_src"][i]
                 source_dots[j].set_data([x_s], [y_s])
-                tracer_dots[j].set_data([self.tau[i]], [system['mag'][i]])
+                tracer_dots[j].set_data([self.tau[i]], [system["mag"][i]])
                 artists.extend([source_dots[j], tracer_dots[j]])
 
                 images = self.VBM.ImageContours(self.s, self.q, x_s, y_s, self.rho)
@@ -678,7 +800,8 @@ class TwoLens1S:
         ani = animation.FuncAnimation(fig, update, frames=len(self.t), interval=50, blit=True)
         plt.close(fig)
         return HTML(ani.to_jshtml())
-    
+
+
 class ThreeLens1SVBM:
     """Triple-lens, single-source model using VBMicrolensing.
 
@@ -737,18 +860,24 @@ class ThreeLens1SVBM:
         self.VBM.astrometry = True
         self.VBM.SetMethod(self.VBM.Method.Nopoly)
 
-        self.colors = [plt.colormaps['BuPu'](i) for i in np.linspace(1.0, .4, len(u0_list))]
+        self.colors = [plt.colormaps["BuPu"](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
         self.systems = self._prepare_systems()
 
     def _prepare_systems(self):
         """Assemble source trajectories and magnifications."""
-
         systems = []
         for u0, color in zip(self.u0_list, self.colors):
             param_vec = [
-                np.log(self.s12), np.log(self.q2), u0, self.alpha,
-                np.log(self.rho), np.log(self.tE), self.t0,
-                np.log(self.s23), np.log(self.q3), self.phi
+                np.log(self.s12),
+                np.log(self.q2),
+                u0,
+                self.alpha,
+                np.log(self.rho),
+                np.log(self.tE),
+                self.t0,
+                np.log(self.s23),
+                np.log(self.q3),
+                self.phi,
             ]
 
             mag, *_ = self.VBM.TripleLightCurve(param_vec, self.t)
@@ -756,22 +885,23 @@ class ThreeLens1SVBM:
             x_src = self.tau * np.cos(self.theta) - u0 * np.sin(self.theta)
             y_src = self.tau * np.sin(self.theta) + u0 * np.cos(self.theta)
 
-            systems.append({
-                'u0': u0,
-                'color': color,
-                'mag': mag,
-                'x_src': x_src,
-                'y_src': y_src
-            })
+            systems.append({"u0": u0, "color": color, "mag": mag, "x_src": x_src, "y_src": y_src})
 
         return systems
 
     def _setting_parameters(self):
         """Initialise the lens geometry in the VBM solver."""
         param = [
-            np.log(self.s12), np.log(self.q2), self.u0_list[0], self.alpha,
-            np.log(self.rho), np.log(self.tE), self.t0,
-            np.log(self.s23), np.log(self.q3), self.phi
+            np.log(self.s12),
+            np.log(self.q2),
+            self.u0_list[0],
+            self.alpha,
+            np.log(self.rho),
+            np.log(self.tE),
+            self.t0,
+            np.log(self.s23),
+            np.log(self.q3),
+            self.phi,
         ]
         _ = self.VBM.TripleLightCurve(param, self.t)
 
@@ -782,7 +912,7 @@ class ThreeLens1SVBM:
         x3 = self.s23 * np.cos(self.phi)
         y3 = self.s23 * np.sin(self.phi)
         return [(x1, y1), (x2, y2), (x3, y3)]
-    
+
     def _calculate_image_positions(self, xs, ys):
         """Solve the lens equation for a given source position.
 
@@ -796,20 +926,19 @@ class ThreeLens1SVBM:
         list[complex]
             Complex coordinates of the image positions.
         """
-
         TRIL = TripleLensing.TripleLensing()
         mlens = [1 - self.q2 - self.q3, self.q2, self.q3]
         zlens = self._compute_lens_positions()
-        zlens_cpp_format = [coord for pair in zlens for coord in pair] 
+        zlens_cpp_format = [coord for pair in zlens for coord in pair]
         nlens = len(mlens)
 
         zrxy_flat = TRIL.solv_lens_equation(mlens, zlens_cpp_format, xs, ys, nlens)
         degree = nlens * nlens + 1
         real_parts = zrxy_flat[:degree]
-        imag_parts = zrxy_flat[degree:2 * degree]
+        imag_parts = zrxy_flat[degree : 2 * degree]
 
         return [complex(re, im) for re, im in zip(real_parts, imag_parts)]
-    
+
     def _true_solution(self, z_image, xs, ys, so_leps=1e-10):
         """Check if ``z_image`` solves the lens equation.
 
@@ -827,7 +956,6 @@ class ThreeLens1SVBM:
         bool
             ``True`` if the lens equation is satisfied.
         """
-
         mlens = [1 - self.q2 - self.q3, self.q2, self.q3]
         zlens = [complex(x, y) for x, y in self._compute_lens_positions()]
         zs = complex(xs, ys)
@@ -843,21 +971,31 @@ class ThreeLens1SVBM:
         criticalcurves = self.VBM.Multicriticalcurves()
 
         plt.figure(figsize=(6, 6))
-        lens_handle = Line2D([0], [0], marker='o', color='k', linestyle='None', label='Lens', markersize=6)
-        caustic_handle = Line2D([0], [0], color='r', lw=1.2, label='Caustic')
-        crit_curve_handle = Line2D([0], [0], color='k', linestyle='--', lw=0.8, label='Critical Curve')
+        lens_handle = Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="k",
+            linestyle="None",
+            label="Lens",
+            markersize=6,
+        )
+        caustic_handle = Line2D([0], [0], color="r", lw=1.2, label="Caustic")
+        crit_curve_handle = Line2D(
+            [0], [0], color="k", linestyle="--", lw=0.8, label="Critical Curve"
+        )
 
         for cau in caustics:
-            plt.plot(cau[0], cau[1], 'r', lw=1.2)
+            plt.plot(cau[0], cau[1], "r", lw=1.2)
         for crit in criticalcurves:
-            plt.plot(crit[0], crit[1], 'k--', lw=0.8)
+            plt.plot(crit[0], crit[1], "k--", lw=0.8)
 
         for system in self.systems:
-            plt.plot(system['x_src'], system['y_src'], '--', color=system['color'], alpha=0.6)
+            plt.plot(system["x_src"], system["y_src"], "--", color=system["color"], alpha=0.6)
 
         lens_positions = self._compute_lens_positions()
         for x, y in lens_positions:
-            plt.plot(x, y, 'ko', label='Lens')
+            plt.plot(x, y, "ko", label="Lens")
 
         plt.xlim(-2, 2)
         plt.ylim(-2, 2)
@@ -865,7 +1003,7 @@ class ThreeLens1SVBM:
         plt.ylabel(r"$\theta_y$ ($\theta_E$)")
         plt.title("3L1S Lensing Event")
         plt.gca().set_aspect("equal")
-        plt.legend(handles=[lens_handle, caustic_handle, crit_curve_handle], loc='upper right')
+        plt.legend(handles=[lens_handle, caustic_handle, crit_curve_handle], loc="upper right")
         plt.grid(True)
         plt.tight_layout()
         plt.show()
@@ -874,7 +1012,12 @@ class ThreeLens1SVBM:
         """Plot the triple-lens light curve."""
         plt.figure(figsize=(6, 4))
         for system in self.systems:
-            plt.plot(self.tau, system['mag'], color=system['color'], label=fr"$u_0$ = {system['u0']}")
+            plt.plot(
+                self.tau,
+                system["mag"],
+                color=system["color"],
+                label=rf"$u_0$ = {system['u0']}",
+            )
         plt.xlabel(r"Time ($\tau$)")
         plt.ylabel("Magnification")
         plt.title("Triple Lens Light Curve")
@@ -883,10 +1026,7 @@ class ThreeLens1SVBM:
         plt.tight_layout()
         plt.show()
 
-    
-
-    
-    def plot_different_q3_lc(self, q3_values, reference_q3=None, colormap='RdPu'):
+    def plot_different_q3_lc(self, q3_values, reference_q3=None, colormap="RdPu"):
         """Compare light curves for multiple ``q3`` values.
 
         Parameters
@@ -899,8 +1039,8 @@ class ThreeLens1SVBM:
         colormap : str, optional
             Name of a matplotlib colormap for the different curves.
         """
-        colors = [plt.colormaps[colormap](i) for i in np.linspace(.5, 1, len(q3_values))]
-        
+        colors = [plt.colormaps[colormap](i) for i in np.linspace(0.5, 1, len(q3_values))]
+
         plt.figure(figsize=(8, 6))
         gs = plt.GridSpec(2, 1, height_ratios=[3, 1], hspace=0.05)
         ax1 = plt.subplot(gs[0])
@@ -908,22 +1048,36 @@ class ThreeLens1SVBM:
 
         ref_q3 = reference_q3 if reference_q3 is not None else q3_values[0]
         ref_param = [
-            np.log(self.s12), np.log(self.q2), self.u0_list[0], self.alpha,
-            np.log(self.rho), np.log(self.tE), self.t0,
-            np.log(self.s23), np.log(ref_q3), self.phi
+            np.log(self.s12),
+            np.log(self.q2),
+            self.u0_list[0],
+            self.alpha,
+            np.log(self.rho),
+            np.log(self.tE),
+            self.t0,
+            np.log(self.s23),
+            np.log(ref_q3),
+            self.phi,
         ]
         ref_mag, *_ = self.VBM.TripleLightCurve(ref_param, self.t)
 
         for idx, q3 in enumerate(q3_values):
             color = colors[idx]
             param_vec = [
-                np.log(self.s12), np.log(self.q2), self.u0_list[0], self.alpha,
-                np.log(self.rho), np.log(self.tE), self.t0,
-                np.log(self.s23), np.log(q3), self.phi
+                np.log(self.s12),
+                np.log(self.q2),
+                self.u0_list[0],
+                self.alpha,
+                np.log(self.rho),
+                np.log(self.tE),
+                self.t0,
+                np.log(self.s23),
+                np.log(q3),
+                self.phi,
             ]
             mag, *_ = self.VBM.TripleLightCurve(param_vec, self.t)
 
-            label = fr"$q_3$ = {q3:.2e}"
+            label = rf"$q_3$ = {q3:.2e}"
             ax1.plot(self.tau, mag, label=label, color=color)
             residual = np.array(ref_mag) - np.array(mag)
             ax2.plot(self.tau, residual, color=color)
@@ -935,21 +1089,12 @@ class ThreeLens1SVBM:
 
         ax2.set_xlabel(r"Time ($\tau$)")
         ax2.set_ylabel("Residuals")
-        ax2.axhline(0, color='gray', lw=0.5, ls='--')
+        ax2.axhline(0, color="gray", lw=0.5, ls="--")
         ax2.grid(True)
 
         plt.tight_layout()
         plt.show()
 
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from matplotlib.animation import FuncAnimation
-from IPython.display import HTML
-
-import VBMicrolensing
-import TripleLensing
-from TestML import get_crit_caus, getphis_v3, get_allimgs_with_mu, testing
 
 class ThreeLens1S:
     """Triple-lens model using a direct solver.
@@ -963,8 +1108,23 @@ class ThreeLens1S:
     >>> model.plot_light_curve()
     """
 
-    def __init__(self, t0, tE, rho, u0_list, q2, q3, s2, s3, alpha_deg, psi_deg,
-                 rs, secnum, basenum, num_points):
+    def __init__(
+        self,
+        t0,
+        tE,
+        rho,
+        u0_list,
+        q2,
+        q3,
+        s2,
+        s3,
+        alpha_deg,
+        psi_deg,
+        rs,
+        secnum,
+        basenum,
+        num_points,
+    ):
         """Initialise the direct triple-lens solver.
 
         Parameters
@@ -998,7 +1158,6 @@ class ThreeLens1S:
         num_points : int
             Number of time samples for the source trajectory.
         """
-
         self.t0 = t0
         self.tE = tE
         self.rho = rho
@@ -1020,10 +1179,11 @@ class ThreeLens1S:
         self.t = self.t0 + self.tau * self.tE
 
         self.TRIL = TripleLensing.TripleLensing()
-        self.colors = [plt.colormaps['BuPu'](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
+        self.colors = [plt.colormaps["BuPu"](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
         self.systems = self._prepare_systems()
 
         import VBMicrolensing
+
         self.VBM = VBMicrolensing.VBMicrolensing()
         self.VBM.RelTol = 1e-3
         self.VBM.Tol = 1e-3
@@ -1039,7 +1199,6 @@ class ThreeLens1S:
             ``(mlens, zlens)`` where ``mlens`` are the mass fractions and
             ``zlens`` contains the ``x`` and ``y`` coordinates of each lens.
         """
-
         m1 = 1 / (1 + self.q2 + self.q3)
         m2 = self.q2 * m1
         m3 = self.q3 * m1
@@ -1053,7 +1212,6 @@ class ThreeLens1S:
 
     def _prepare_systems(self):
         """Generate trajectories and centroid shifts for each ``u0``."""
-
         systems = []
         mlens, zlens = self.get_lens_geometry()
         z = [[zlens[0], zlens[1]], [zlens[2], zlens[3]], [zlens[4], zlens[5]]]
@@ -1067,10 +1225,22 @@ class ThreeLens1S:
 
             cent_x, cent_y = [], []
             for i in range(self.num_points):
-                Phis = getphis_v3(mlens, z, y1s[i], y2s[i], self.rs, 2000, caus_x, caus_y,
-                                  secnum=self.secnum, basenum=self.basenum, scale=10)[0]
+                Phis = getphis_v3(
+                    mlens,
+                    z,
+                    y1s[i],
+                    y2s[i],
+                    self.rs,
+                    2000,
+                    caus_x,
+                    caus_y,
+                    secnum=self.secnum,
+                    basenum=self.basenum,
+                    scale=10,
+                )[0]
                 imgXS, imgYS, imgMUs, *_ = get_allimgs_with_mu(
-                    mlens, z, y1s[i], y2s[i], self.rs, len(mlens), Phis)
+                    mlens, z, y1s[i], y2s[i], self.rs, len(mlens), Phis
+                )
 
                 if len(imgMUs) == 0 or sum(imgMUs) == 0:
                     cent_x.append(np.nan)
@@ -1081,25 +1251,34 @@ class ThreeLens1S:
                     cent_x.append(cx)
                     cent_y.append(cy)
 
-            systems.append({
-                'u0': u0,
-                'color': self.colors[idx],
-                'y1s': y1s,
-                'y2s': y2s,
-                'cent_x': np.array(cent_x),
-                'cent_y': np.array(cent_y),
-                'mlens': mlens,
-                'zlens': zlens
-            })
+            systems.append(
+                {
+                    "u0": u0,
+                    "color": self.colors[idx],
+                    "y1s": y1s,
+                    "y2s": y2s,
+                    "cent_x": np.array(cent_x),
+                    "cent_y": np.array(cent_y),
+                    "mlens": mlens,
+                    "zlens": zlens,
+                }
+            )
 
         return systems
-    
+
     def plot_caustics_and_critical(self):
         """Plot VBM caustics and critical curves."""
         param = [
-            np.log(self.s2), np.log(self.q2), self.u0_list[0], self.alpha_deg,
-            np.log(self.rho), np.log(self.tE), self.t0,
-            np.log(self.s3), np.log(self.q3), self.psi_rad
+            np.log(self.s2),
+            np.log(self.q2),
+            self.u0_list[0],
+            self.alpha_deg,
+            np.log(self.rho),
+            np.log(self.tE),
+            self.t0,
+            np.log(self.s3),
+            np.log(self.q3),
+            self.psi_rad,
         ]
         _ = self.VBM.TripleLightCurve(param, self.t)  # sets internal lens geometry
 
@@ -1108,16 +1287,16 @@ class ThreeLens1S:
 
         plt.figure(figsize=(6, 6))
         for c in caustics:
-            plt.plot(c[0], c[1], 'r', lw=1.2)
+            plt.plot(c[0], c[1], "r", lw=1.2)
         for crit in criticalcurves:
-            plt.plot(crit[0], crit[1], 'k--', lw=0.8)
+            plt.plot(crit[0], crit[1], "k--", lw=0.8)
 
         lens_pos = self.get_lens_geometry()[1]
         for i in range(0, 6, 2):
-            plt.plot(lens_pos[i], lens_pos[i+1], 'ko')
+            plt.plot(lens_pos[i], lens_pos[i + 1], "ko")
 
         plt.title("Caustics and Critical Curves (VBM)")
-        plt.gca().set_aspect('equal')
+        plt.gca().set_aspect("equal")
         plt.grid(True)
         plt.show()
 
@@ -1126,27 +1305,34 @@ class ThreeLens1S:
         plt.figure(figsize=(6, 4))
         for u0, color in zip(self.u0_list, self.colors):
             param = [
-                np.log(self.s2), np.log(self.q2), u0, self.alpha_deg,
-                np.log(self.rho), np.log(self.tE), self.t0,
-                np.log(self.s3), np.log(self.q3), self.psi_rad
+                np.log(self.s2),
+                np.log(self.q2),
+                u0,
+                self.alpha_deg,
+                np.log(self.rho),
+                np.log(self.tE),
+                self.t0,
+                np.log(self.s3),
+                np.log(self.q3),
+                self.psi_rad,
             ]
             mag, *_ = self.VBM.TripleLightCurve(param, self.t)
-            plt.plot(self.tau, mag, color=color, label=fr"$u_0$ = {u0}")
+            plt.plot(self.tau, mag, color=color, label=rf"$u_0$ = {u0}")
         plt.xlabel(r"$\tau$")
         plt.ylabel("Magnification")
         plt.title("Triple Lens Light Curve (VBM)")
         plt.grid(True)
         plt.legend()
         plt.tight_layout()
-        plt.show()    
+        plt.show()
 
     def plot_centroid_trajectory(self):
         """Plot centroid trajectories for all sources."""
         plt.figure(figsize=(6, 6))
         for system in self.systems:
-            dx = system['cent_x'] - system['y1s']
-            dy = system['cent_y'] - system['y2s']
-            plt.plot(dx, dy, color=system['color'], label=fr"$u_0$ = {system['u0']}")
+            dx = system["cent_x"] - system["y1s"]
+            dy = system["cent_y"] - system["y2s"]
+            plt.plot(dx, dy, color=system["color"], label=rf"$u_0$ = {system['u0']}")
         plt.xlabel(r"$\theta_x$ ($\theta_E$)")
         plt.ylabel(r"$\theta_y$ ($\theta_E$)")
         plt.title("Centroid Shift Trajectories")
@@ -1159,10 +1345,15 @@ class ThreeLens1S:
         """Plot centroid shift amplitude for each source over time."""
         plt.figure(figsize=(8, 5))
         for system in self.systems:
-            dx = system['cent_x'] - system['y1s']
-            dy = system['cent_y'] - system['y2s']
+            dx = system["cent_x"] - system["y1s"]
+            dy = system["cent_y"] - system["y2s"]
             dtheta = np.sqrt(dx**2 + dy**2)
-            plt.plot(self.tau, dtheta, label=fr"$u_0$ = {system['u0']}", color=system['color'])
+            plt.plot(
+                self.tau,
+                dtheta,
+                label=rf"$u_0$ = {system['u0']}",
+                color=system["color"],
+            )
         plt.xlabel(r"$\tau$")
         plt.ylabel(r"$|\delta \vec{\Theta}|$")
         plt.title("Centroid Shift vs Time")
@@ -1187,15 +1378,24 @@ class ThreeLens1S:
             ax.set_aspect("equal")
             ax.set_title("Triple Lens Event Animation")
             for system in self.systems:
-                testing(ax, system['mlens'], system['zlens'], system['y1s'][i], system['y2s'][i], self.rs,
-                        secnum=self.secnum, basenum=self.basenum,
-                        full_trajectory=(system['y1s'], system['y2s']), cl=system['color'])
-            return ax,
+                testing(
+                    ax,
+                    system["mlens"],
+                    system["zlens"],
+                    system["y1s"][i],
+                    system["y2s"][i],
+                    self.rs,
+                    secnum=self.secnum,
+                    basenum=self.basenum,
+                    full_trajectory=(system["y1s"], system["y2s"]),
+                    cl=system["color"],
+                )
+            return (ax,)
 
-        ani = FuncAnimation(fig, update, frames=self.num_points, blit=False)
+        ani = animation.FuncAnimation(fig, update, frames=self.num_points, blit=False)
         plt.close(fig)
         return HTML(ani.to_jshtml())
-    
+
     def animate_combined(self):
         """Animation overlaying caustics and source motion.
 
@@ -1204,12 +1404,18 @@ class ThreeLens1S:
         IPython.display.HTML
             HTML representation of the animation for use in notebooks.
         """
-
         # First, prepare the caustics and critical curves once using VBM
         param = [
-            np.log(self.s2), np.log(self.q2), self.u0_list[0], self.alpha_deg,
-            np.log(self.rho), np.log(self.tE), self.t0,
-            np.log(self.s3), np.log(self.q3), self.psi_rad
+            np.log(self.s2),
+            np.log(self.q2),
+            self.u0_list[0],
+            self.alpha_deg,
+            np.log(self.rho),
+            np.log(self.tE),
+            self.t0,
+            np.log(self.s3),
+            np.log(self.q3),
+            self.psi_rad,
         ]
         _ = self.VBM.TripleLightCurve(param, self.t)  # set lens geometry
         caustics = self.VBM.Multicaustics()
@@ -1226,39 +1432,62 @@ class ThreeLens1S:
 
             # Plot VBM caustics and criticals
             for c in caustics:
-                ax.plot(c[0], c[1], 'r', lw=1.2)
+                ax.plot(c[0], c[1], "r", lw=1.2)
             for crit in criticalcurves:
-                ax.plot(crit[0], crit[1], 'k--', lw=0.8)
+                ax.plot(crit[0], crit[1], "k--", lw=0.8)
 
             for system in self.systems:
                 # Plot the full source trajectory
-                ax.plot(system['y1s'], system['y2s'], '--', color=system['color'], alpha=0.5)
+                ax.plot(system["y1s"], system["y2s"], "--", color=system["color"], alpha=0.5)
 
                 # Plot source position at frame i
-                ax.plot(system['y1s'][i], system['y2s'][i], 'o', color=system['color'])
+                ax.plot(system["y1s"][i], system["y2s"][i], "o", color=system["color"])
 
                 # Plot the lens positions
-                zlens = system['zlens']
-                ax.plot(zlens[0], zlens[1], 'ko')
-                ax.plot(zlens[2], zlens[3], 'ko')
-                ax.plot(zlens[4], zlens[5], 'ko')
+                zlens = system["zlens"]
+                ax.plot(zlens[0], zlens[1], "ko")
+                ax.plot(zlens[2], zlens[3], "ko")
+                ax.plot(zlens[4], zlens[5], "ko")
 
                 # Optional: Plot image positions (using TripleLensing)
                 imgXS, imgYS, imgMUs, *_ = get_allimgs_with_mu(
-                    system['mlens'], [[zlens[0], zlens[1]], [zlens[2], zlens[3]], [zlens[4], zlens[5]]],
-                    system['y1s'][i], system['y2s'][i], self.rs, len(system['mlens']),
-                    getphis_v3(system['mlens'], [[zlens[0], zlens[1]], [zlens[2], zlens[3]], [zlens[4], zlens[5]]],
-                            system['y1s'][i], system['y2s'][i], self.rs, 2000,
-                            np.array([pt[0] for pt in caustics[0]]),  # Just using 1st loop
-                            np.array([pt[1] for pt in caustics[0]]),
-                            secnum=self.secnum, basenum=self.basenum, scale=10)[0]
+                    system["mlens"],
+                    [[zlens[0], zlens[1]], [zlens[2], zlens[3]], [zlens[4], zlens[5]]],
+                    system["y1s"][i],
+                    system["y2s"][i],
+                    self.rs,
+                    len(system["mlens"]),
+                    getphis_v3(
+                        system["mlens"],
+                        [
+                            [zlens[0], zlens[1]],
+                            [zlens[2], zlens[3]],
+                            [zlens[4], zlens[5]],
+                        ],
+                        system["y1s"][i],
+                        system["y2s"][i],
+                        self.rs,
+                        2000,
+                        np.array([pt[0] for pt in caustics[0]]),  # Just using 1st loop
+                        np.array([pt[1] for pt in caustics[0]]),
+                        secnum=self.secnum,
+                        basenum=self.basenum,
+                        scale=10,
+                    )[0],
                 )
 
                 if len(imgXS) > 0:
-                    ax.scatter(imgXS, imgYS, s=30, edgecolors='black', facecolors='none', label='Images')
+                    ax.scatter(
+                        imgXS,
+                        imgYS,
+                        s=30,
+                        edgecolors="black",
+                        facecolors="none",
+                        label="Images",
+                    )
 
-            return ax,
+            return (ax,)
 
-        ani = FuncAnimation(fig, update, frames=self.num_points, blit=False)
+        ani = animation.FuncAnimation(fig, update, frames=self.num_points, blit=False)
         plt.close(fig)
         return HTML(ani.to_jshtml())

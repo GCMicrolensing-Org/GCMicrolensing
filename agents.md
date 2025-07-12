@@ -29,26 +29,26 @@ Example docstring structure:
 def method_name(self, param1, param2):
     """
     Brief description of what the method does.
-    
+
     Parameters
     ----------
     param1 : float
         Description of parameter 1.
     param2 : array-like
         Description of parameter 2.
-    
+
     Returns
     -------
     result : ndarray
         Description of return value.
-    
+
     Examples
     --------
     Basic usage:
-    
+
     >>> model = ModelClass(param1=1.0, param2=[0.1, 0.5])
     >>> result = model.method_name(1.0, [0.1, 0.5])
-    
+
     Notes
     -----
     Additional implementation details, mathematical background, etc.
@@ -102,7 +102,12 @@ def method_name(self, param1, param2):
 - **Source distribution**: .tar.gz file
 - **Wheel distribution**: .whl file
 - **GitHub release**: Automatic with assets
-- **PyPI publishing**: Optional (commented in workflow)
+- **PyPI publishing**: Automatic to both TestPyPI and PyPI
+  - **TestPyPI**: For testing releases before production
+  - **PyPI**: For production releases
+  - **API tokens**: Stored as GitHub secrets (`TEST_PYPI_API_TOKEN`, `PYPI_API_TOKEN`)
+  - **Trigger**: Automatically publishes when git tags are pushed
+  - **Skip existing**: Prevents duplicate uploads if package already exists
 
 ### 3. Testing
 - **Smoke tests**: Basic instantiation and plotting
@@ -132,6 +137,17 @@ python -m build
 - **Type hints**: Use where appropriate
 - **Error handling**: Graceful degradation for edge cases
 - **Performance**: Optimize for scientific computing workloads
+
+### 4. Pre-commit Configuration
+- **Comprehensive hooks**: black, isort, flake8, mypy, bandit, pydocstyle
+- **Virtual environment workaround**: Custom hook removes `venv/` directory before scanning
+  - **Why**: Bandit was slow due to scanning virtual environment packages
+  - **How**: Local hook runs `rm -rf venv` if directory exists
+  - **Impact**: Much faster pre-commit runs, cleaner security scan results
+  - **Note**: Virtual environment must be recreated after pre-commit
+- **Exclusions**: `triplelens/` directory excluded from all hooks (external code)
+- **Configuration files**: `.flake8` for flake8 settings, `.pre-commit-config.yaml` for hooks
+- **Line length**: 100 characters (accommodates long URLs and scientific notation)
 
 ## Common Pitfalls
 

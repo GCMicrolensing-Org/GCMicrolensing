@@ -1,0 +1,68 @@
+cff-version: 1.2.0
+message: >-
+  If you use GCMicrolensing in your research, please cite this software and also cite the original TripleLensing and VBMicrolensing libraries as recommended below.
+title: "GCMicrolensing: Tools for simulating gravitational microlensing events"
+authors:
+  - family-names: Costa Cuautle
+    given-names: Gregory
+    email: your_student_email@example.com
+    affiliation: The Ohio State University
+version: "0.1.0"
+date-released: "2024-06-10"
+doi: "10.5281/zenodo.1234567"  # Replace with your Zenodo DOI if available
+url: "https://github.com/GregCuautle/SURP25"
+repository-code: "https://github.com/GregCuautle/SURP25"
+license: MIT
+keywords:
+  - astronomy
+  - microlensing
+  - gravitational-lensing
+  - astrophysics
+
+# How to cite this software
+preferred-citation:
+  type: article
+  title: "GCMicrolensing: Tools for simulating gravitational microlensing events"
+  authors:
+    - family-names: Costa Cuautle
+      given-names: Gregory
+  year: 2024
+  url: "https://github.com/GregCuautle/SURP25"
+  # Add journal info/DOI if published
+
+# Recommended citations for dependencies
+references:
+  - type: article
+    title: "Light Curve Calculations for Triple Microlensing Systems"
+    authors:
+      - family-names: Zheng
+        given-names: Z.
+      - family-names: Bozza
+        given-names: V.
+      - family-names: Zhu
+        given-names: W.
+      - family-names: Bachelet
+        given-names: E.
+      - family-names: Han
+        given-names: C.
+      - family-names: Beaulieu
+        given-names: J.-P.
+    year: 2021
+    journal: "Monthly Notices of the Royal Astronomical Society"
+    volume: 502
+    pages: 6044-6062
+    doi: "10.1093/mnras/stab509"
+    url: "https://doi.org/10.1093/mnras/stab509"
+    note: "TripleLensing library"
+  - type: article
+    title: "VBBinaryLensing: a public package for microlensing light curve computation"
+    authors:
+      - family-names: Bozza
+        given-names: V.
+    year: 2010
+    journal: "Monthly Notices of the Royal Astronomical Society"
+    volume: 408
+    pages: 2188-2202
+    doi: "10.1111/j.1365-2966.2010.17294.x"
+    url: "https://doi.org/10.1111/j.1365-2966.2010.17294.x"
+    note: "VBMicrolensing library"

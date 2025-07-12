@@ -26,4 +26,4 @@ dependencies:
   - ipydatagrid
   - pip
   - pip:
-      - VBMicrolensing
+      - VBMicrolensing>=5.0.0

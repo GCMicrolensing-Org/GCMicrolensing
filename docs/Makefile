@@ -50,4 +50,4 @@ spelling:
 	$(SPHINXBUILD) -b spelling $(SPHINXOPTS) $(SOURCEDIR) $(BUILDDIR)/spelling
 	@echo
 	@echo "Spell check finished; look for any errors in the above output " \
-	      "or in $(BUILDDIR)/spelling/output.txt." 
+	      "or in $(BUILDDIR)/spelling/output.txt."

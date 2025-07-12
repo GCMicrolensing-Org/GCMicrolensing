@@ -21,7 +21,7 @@
 
 #define SOLEPS 1.0e-5 // true or false solution of lens equation solving, 1.0e-5 is a bit too strict at some cases
 // #define SOLEPS1e2 1e-3 // threshold used to judge whether we use Newton method to polish the root using the original lens equation instead of the polynomial
-// #define SOLEPS1e3 1e-2 // threshold used to judge whether we should taken the result of Newton polish method 
+// #define SOLEPS1e3 1e-2 // threshold used to judge whether we should taken the result of Newton polish method
 
 
 // 2021.10.07 to do: perhaps the timing when NEWTON POLISH used should be changed?

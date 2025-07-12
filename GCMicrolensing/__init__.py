@@ -1,12 +1,13 @@
-# GCMicrolensing/__init__.py
+"""
+GCMicrolensing: A Python package by Greg Costa Cuautle for simulating astrometric data.
 
-__version__ = '0.1.0'  # Start with a simple version number, update as you go!
+This package provides tools for generating simulated astrometric data for
+microlensing events, including specialized functions for calculations,
+and utilities for creating engaging plots and animations.
 
-"""High level interface for the :mod:`GCMicrolensing` package.
-
-The package bundles simple classes for creating synthetic microlensing
-light curves and centroid shifts.  It is intended for educational and
-exploratory scientific use.
+This package is under development and the documentation is not yet complete.
 """
 
-from .models import OneL1S, TwoLens1S, ThreeLens1SVBM, ThreeLens1S 
+__version__ = "0.1.0"  # Start with a simple version number, update as you go!
+
+from .models import OneL1S, ThreeLens1S, ThreeLens1SVBM, TwoLens1S  # noqa: F401

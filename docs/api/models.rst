@@ -70,7 +70,7 @@ Common Parameters
 All microlensing models share these common parameters:
 
 * **t0** (float): Time of closest approach in days
-* **tE** (float): Einstein crossing time in days  
+* **tE** (float): Einstein crossing time in days
 * **rho** (float): Source radius in units of Einstein radius
 * **u0_list** (array-like): List of impact parameters
 
@@ -153,7 +153,7 @@ The models implement the gravitational lens equation:
 
 where:
 * :math:`\vec{\beta}` is the source position
-* :math:`\vec{\theta}` is the image position  
+* :math:`\vec{\theta}` is the image position
 * :math:`\vec{\alpha}` is the deflection angle
 
 For multiple lenses, the deflection angle is the sum of individual lens contributions:
@@ -162,4 +162,4 @@ For multiple lenses, the deflection angle is the sum of individual lens contribu
 
    \vec{\alpha}(\vec{\theta}) = \sum_i \frac{m_i (\vec{\theta} - \vec{\theta}_i)}{|\vec{\theta} - \vec{\theta}_i|^2}
 
-where :math:`m_i` and :math:`\vec{\theta}_i` are the mass and position of the i-th lens. 
+where :math:`m_i` and :math:`\vec{\theta}_i` are the mass and position of the i-th lens.

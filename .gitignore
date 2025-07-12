@@ -105,4 +105,14 @@ triplelens/build/
 triplelens/TripleLensing.egg-info/
 triplelens/.eggs/
 triplelens/var/
+triplelens/data/
+triplelens/test/
+triplelens/*.egg-info/
 
+# Pre-commit cache
+.pre-commit-config.yaml.bak
+
+# Bandit reports
+bandit-report.json
+bandit-report.xml
+bandit-report.html

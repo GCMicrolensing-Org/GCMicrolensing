@@ -186,7 +186,7 @@ _sols *VBBinaryLensing::PlotCrit(double a1, double q1, int NPS) {
 				isso = Prov2;
 				head = 0;
 				tail = 1;
-			}			
+			}
 		}
 		if (MD < SD) {
 			if (head == 1){
@@ -387,7 +387,7 @@ _sols *VBBinaryLensing::PlotCritTriple(double m[], complex z[], int NPS, int nle
 				isso = Prov2;
 				head = 0;
 				tail = 1;
-			}			
+			}
 		}
 		//printf("MD = %e\n", MD);
 		if (MD < SD) {
@@ -5889,7 +5889,3 @@ void findCloseImages(double mlens[], complex zlens[], double xs, double ys, int 
 
 
 }
-
-
-
-
