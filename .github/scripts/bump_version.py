@@ -40,5 +40,5 @@ readme = Path("README.md")
 if readme.exists():
     text = readme.read_text()
     # Example: replace version in a badge or text like 'GCMicrolensing vX.Y.Z'
-    text = re.sub(r"(GCMicrolensing v)([0-9]+\.[0-9]+\.[0-9]+)", f"\\1{version}", text)
+    text = re.sub(r"GCMicrolensing v[0-9]+\.[0-9]+\.[0-9]+", f"GCMicrolensing v{version}", text)
     readme.write_text(text)
