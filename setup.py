@@ -28,7 +28,7 @@ setup(
         "astropy",
         "VBMicrolensing>=5.0.0",
         "pandas",
-        f"TripleLensing @ file://{triplelens_path}",
+        "TripleLensing @ file://./triplelens",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
