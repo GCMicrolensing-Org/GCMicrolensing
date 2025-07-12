@@ -42,12 +42,10 @@ jobs:
 
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
         body: |
@@ -67,26 +65,9 @@ jobs:
           ## Documentation
 
           See the [documentation](https://gcmicrolensing.readthedocs.io/) for usage examples.
-
-    - name: Upload Release Assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/GCMicrolensing-${{ github.ref_name }}.tar.gz
-        asset_name: GCMicrolensing-${{ github.ref_name }}.tar.gz
-        asset_content_type: application/gzip
-
-    - name: Upload Wheel Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/GCMicrolensing-${{ github.ref_name }}-py3-none-any.whl
-        asset_name: GCMicrolensing-${{ github.ref_name }}-py3-none-any.whl
-        asset_content_type: application/octet-stream
+        files: |
+          dist/GCMicrolensing-${{ github.ref_name }}.tar.gz
+          dist/GCMicrolensing-${{ github.ref_name }}-py3-none-any.whl
 
   # Publish to TestPyPI
   publish-testpypi:
