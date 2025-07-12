@@ -105,6 +105,9 @@ autodoc_typehints = "description"
 # Don't show class signature with the class' name.
 autodoc_class_signature = "separated"
 
+# Mock imports for modules that require C++ compilation
+autodoc_mock_imports = ["TripleLensing", "VBMicrolensing"]
+
 # -- Options for napoleon ---------------------------------------------------
 
 # Napoleon settings

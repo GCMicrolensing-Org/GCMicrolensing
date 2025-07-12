@@ -29,5 +29,5 @@ sphinx-tabs>=3.0.0
 sphinxcontrib-bibtex>=2.4.0
 sphinxcontrib-mermaid>=0.7.0
 
-# Note: VBMicrolensing and TripleLensing may need to be installed separately
-# as they are specialized microlensing libraries
+# Note: VBMicrolensing and TripleLensing are specialized microlensing libraries
+# that require C++ compilation. For documentation builds, these will be mocked.
