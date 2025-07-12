@@ -1,9 +1,14 @@
 """Packaging script for the :mod:`GCMicrolensing` project."""
 
+import os
+
 from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
+
+# Check if we're building on ReadTheDocs
+on_rtd = os.environ.get("READTHEDOCS") == "True"
 
 setup(
     name="GCMicrolensing",
@@ -69,3 +74,20 @@ setup(
         "Operating System :: OS Independent",
     ],
 )
+
+# Build the C++ extension only if not on RTD
+if not on_rtd:
+    # Import and run the triplelens setup
+    import subprocess
+    import sys
+
+    try:
+        # Change to the triplelens directory and run its setup
+        triplelens_dir = os.path.join("GCMicrolensing", "triplelens")
+        if os.path.exists(triplelens_dir):
+            subprocess.check_call(
+                [sys.executable, "setup.py", "build_ext", "--inplace"], cwd=triplelens_dir
+            )
+    except subprocess.CalledProcessError as e:
+        print(f"Warning: Failed to build TripleLensing extension: {e}")
+        print("The package will be installed without the C++ extension.")
