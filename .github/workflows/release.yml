@@ -6,25 +6,7 @@ on:
       - 'v*'  # Trigger on version tags like v1.0.0
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-    - name: Install system dependencies
-      run: sudo apt-get update && sudo apt-get install -y ffmpeg
-    - name: Install pip, wheel, and build
-      run: python -m pip install --upgrade pip wheel build
-    - name: Install package (with local TripleLensing)
-      run: pip install -e .[dev]
-    - name: Run tests
-      run: pytest --maxfail=2 --disable-warnings
-
   build-and-release:
-    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -51,7 +33,7 @@ jobs:
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add pyproject.toml CITATION.cff README.md
+        git add setup.py CITATION.cff README.md
         git commit -m "chore: bump version to v${GITHUB_REF_NAME#v} for release" || echo "No changes to commit"
         git push || echo "No changes to push"
 

@@ -2,7 +2,7 @@
 """
 Script to bump version numbers across project files.
 
-This script updates version numbers in pyproject.toml, CITATION.cff, and README.md
+This script updates version numbers in setup.py, CITATION.cff, and README.md
 files when creating a new release. It's designed to be run from GitHub Actions
 during the release process.
 
@@ -20,12 +20,12 @@ if len(sys.argv) != 3:
 version = sys.argv[1]
 date = sys.argv[2]
 
-# Update pyproject.toml
-pyproject = Path("pyproject.toml")
-if pyproject.exists():
-    text = pyproject.read_text()
+# Update setup.py
+setup_py = Path("setup.py")
+if setup_py.exists():
+    text = setup_py.read_text()
     text = re.sub(r'version\s*=\s*"[^"]+"', f'version = "{version}"', text)
-    pyproject.write_text(text)
+    setup_py.write_text(text)
 
 # Update CITATION.cff
 citation = Path("CITATION.cff")
