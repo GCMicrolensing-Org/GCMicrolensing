@@ -59,6 +59,13 @@ Basic usage:
    # Create an animation
    animation = model.animate()
 
+   # Display the animation (if you're running this in a Jupyter notebook)
+   display(animation)
+
+   # Write the animation to an html file
+   with open("microlensing_animation.html", "w") as f:
+      f.write(animation.data)
+
    # Save the animation as a GIF file
    model.animate(save_gif="microlensing_animation.gif")
 
