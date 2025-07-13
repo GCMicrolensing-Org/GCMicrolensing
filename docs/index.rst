@@ -32,6 +32,7 @@ Key Features
 * **Triple Lens Systems (3L1S)**: Advanced multi-lens simulations
 * **Astrometric Calculations**: Centroid shift predictions
 * **Interactive Animations**: Visualize lensing events in real-time
+* **GIF Export**: Save animations as GIF files for documentation and presentations
 * **Multiple Backends**: VBMicrolensing and TripleLensing support
 
 Quick Start
@@ -57,6 +58,13 @@ Basic usage:
 
    # Create an animation
    animation = model.animate()
+
+   # Save the animation as a GIF file
+   model.animate(save_gif="microlensing_animation.gif")
+
+.. image:: _static/microlensing_animation.gif
+   :alt: Example microlensing animation
+   :align: center
 
 Installation
 -----------

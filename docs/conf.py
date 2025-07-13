@@ -93,6 +93,45 @@ intersphinx_mapping = {
 # NBSphinx configuration
 nbsphinx_execute = "never"  # Don't execute notebooks on RTD
 
+
+# Custom extension to generate animation GIF
+def generate_animation_gif(app):
+    """Generate the microlensing animation GIF during build."""
+    import os
+    import subprocess
+    import sys
+
+    try:
+        # Get the docs directory
+        docs_dir = os.path.dirname(__file__)
+        script_path = os.path.join(docs_dir, "generate_animation.py")
+
+        # Add the project root to Python path
+        project_root = os.path.abspath(os.path.join(docs_dir, ".."))
+        env = os.environ.copy()
+        env["PYTHONPATH"] = f"{project_root}:{env.get('PYTHONPATH', '')}"
+
+        print(f"Running animation generation script: {script_path}")
+        result = subprocess.run(
+            [sys.executable, script_path], cwd=docs_dir, env=env, capture_output=True, text=True
+        )
+
+        if result.returncode == 0:
+            print("Animation GIF generated successfully!")
+            if result.stdout:
+                print(result.stdout)
+        else:
+            print(f"Warning: Animation generation failed: {result.stderr}")
+
+    except Exception as e:
+        print(f"Warning: Could not generate animation GIF: {e}")
+
+
+def setup(app):
+    """Configure Sphinx extension for automatic GIF generation."""
+    app.connect("builder-inited", generate_animation_gif)
+
+
 # -- Theme configuration -----------------------------------------------------
 
 html_theme_options = {

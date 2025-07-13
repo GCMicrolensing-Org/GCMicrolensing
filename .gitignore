@@ -1,5 +1,6 @@
 # DS
-DS_Store
+.DS_Store
+**/.DS_Store
 
 # Python
 __pycache__/
@@ -50,6 +51,7 @@ cover/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # IPython
 profile_default/
@@ -97,6 +99,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Sphinx documentation
+docs/_build/
+docs/_static/*.gif
+docs/_static/*.png
+docs/_static/*.jpg
+docs/_static/*.jpeg
 
 # Project specific
 triplelens/notebooks/

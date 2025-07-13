@@ -128,15 +128,29 @@ class OneL1S:
         self.plot_centroid_shift_on_ax(ax)
         plt.show()
 
-    def animate(self):
-        """Return a HTML animation of the event."""
-        return self._create_animation(figsize=(6, 6), layout="single")
+    def animate(self, save_gif=None):
+        """Return a HTML animation of the event.
 
-    def show_all(self):
-        """Return an animation with light curve and centroid shift."""
-        return self._create_animation(figsize=(14, 6), layout="grid")
+        Parameters
+        ----------
+        save_gif : str, optional
+            If provided, save the animation as a GIF file with this filename.
+            Example: save_gif="microlensing_animation.gif"
+        """
+        return self._create_animation(figsize=(6, 6), layout="single", save_gif=save_gif)
 
-    def _create_animation(self, figsize=(6, 6), layout="single"):
+    def show_all(self, save_gif=None):
+        """Return an animation with light curve and centroid shift.
+
+        Parameters
+        ----------
+        save_gif : str, optional
+            If provided, save the animation as a GIF file with this filename.
+            Example: save_gif="microlensing_full_animation.gif"
+        """
+        return self._create_animation(figsize=(14, 6), layout="grid", save_gif=save_gif)
+
+    def _create_animation(self, figsize=(6, 6), layout="single", save_gif=None):
         """Construct an animation of the microlensing event.
 
         Parameters
@@ -146,6 +160,8 @@ class OneL1S:
         layout : {{'single', 'grid'}}, optional
             ``'grid'`` will also display the light curve and centroid shift
             during the animation. Defaults to ``'single'``.
+        save_gif : str, optional
+            If provided, save the animation as a GIF file with this filename.
 
         Returns
         -------
@@ -249,6 +265,8 @@ class OneL1S:
 
         ani = animation.FuncAnimation(fig, update, frames=n, interval=50, blit=True)
         plt.tight_layout()
+        if save_gif:
+            ani.save(save_gif, writer="pillow")
         return HTML(ani.to_jshtml())
 
 
