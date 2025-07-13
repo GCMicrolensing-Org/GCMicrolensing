@@ -34,10 +34,12 @@ class get_pybind_include(object):
         self.user = user
 
     def __str__(self):
-        import pybind11
-
-        print("rkkkkkkkkkk", pybind11.get_include(self.user))
-        return pybind11.get_include(self.user)
+        try:
+            import pybind11
+            return pybind11.get_include(self.user)
+        except ImportError:
+            # Fallback to system include path if pybind11 is not available
+            return "/usr/include/python3.12"
 
 
 ext_modules = [
@@ -135,6 +137,7 @@ setup(
     long_description="",
     ext_modules=ext_modules,
     install_requires=["pybind11>=2.3"],
+    setup_requires=["pybind11>=2.3"],
     cmdclass={"build_ext": BuildExt},
     zip_safe=False,
 )

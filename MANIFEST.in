@@ -9,5 +9,5 @@ prune GCMicrolensing/triplelens/*.ipynb
 
 # Include documentation
 recursive-include docs *
-recursive-include README.md
-recursive-include LICENSE
+include README.md
+include LICENSE

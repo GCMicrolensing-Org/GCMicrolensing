@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'  # Trigger on version tags like v1.0.0
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -55,6 +59,9 @@ jobs:
         pip install VBMicrolensing>=5.0.0
         python -m build
 
+    - name: List built files
+      run: ls -la dist/
+
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v1
@@ -81,8 +88,8 @@ jobs:
 
           See the [documentation](https://gcmicrolensing.readthedocs.io/) for usage examples.
         files: |
-          dist/gcmicrolensing-${{ github.ref_name }}.tar.gz
-          dist/gcmicrolensing-${{ github.ref_name }}-py3-none-any.whl
+          dist/gcmicrolensing-*.tar.gz
+          dist/gcmicrolensing-*-py3-none-any.whl
 
   # Publish to TestPyPI
   publish-testpypi:

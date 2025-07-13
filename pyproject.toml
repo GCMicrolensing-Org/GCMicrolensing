@@ -1,0 +1,97 @@
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "pybind11>=2.3",
+    "numpy",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "GCMicrolensing"
+dynamic = ["version"]
+description = "Tools for simulating gravitational microlensing events."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Gregory Costa Cuautle", email = "costa.130@buckeyemail.osu.edu"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "scipy",
+    "astropy",
+    "VBMicrolensing>=5.0.0",
+    "pandas",
+    "seaborn",
+    "astroquery",
+    "pyvo",
+    "emcee",
+    "corner",
+    "requests",
+    "tqdm",
+    "pybind11",
+    "jupyter",
+    "ipywidgets",
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "nbsphinx>=0.8.0",
+    "ipython>=8.0.0",
+    "myst-parser>=0.18.0",
+    "sphinx-autodoc-typehints>=1.19.0",
+    "sphinx-gallery>=0.10.0",
+    "sphinx-copybutton>=0.5.0",
+    "sphinx-panels>=0.6.0",
+    "sphinx-tabs>=3.0.0",
+    "sphinxcontrib-bibtex>=2.4.0",
+    "sphinxcontrib-mermaid>=0.7.0",
+]
+dev = [
+    "black",
+    "isort",
+    "flake8",
+    "mypy",
+    "bandit",
+    "pydocstyle",
+    "nbqa",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+]
+
+[project.urls]
+Homepage = "https://github.com/GregCuautle/SURP25"
+Documentation = "https://gcmicrolensing.readthedocs.io/"
+Repository = "https://github.com/GregCuautle/SURP25"
+Issues = "https://github.com/GregCuautle/SURP25/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "GCMicrolensing.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["GCMicrolensing*"]
+
+[tool.setuptools.package-data]
+"GCMicrolensing" = ["*.py", "*.so", "*.dll", "*.dylib"]
+"GCMicrolensing.triplelens" = ["*.py", "*.so", "*.dll", "*.dylib", "*.dat", "*.gif", "*.png", "*.mp4", "*.npz"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["*.pyc", "__pycache__", "*.egg-info", ".DS_Store", "build", "dist", ".git", ".gitignore"]
