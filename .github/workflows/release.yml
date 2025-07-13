@@ -48,7 +48,12 @@ jobs:
         git push || echo "No changes to push"
 
     - name: Build package
-      run: python -m build
+      run: |
+        pip install build
+        pip install pybind11 numpy
+        pip install -r requirements-dev.txt
+        pip install VBMicrolensing>=5.0.0
+        python -m build
 
     - name: Create Release
       id: create_release
@@ -99,7 +104,12 @@ jobs:
     - name: Install package in development mode
       run: pip install .
     - name: Build package
-      run: python -m build
+      run: |
+        pip install build
+        pip install pybind11 numpy
+        pip install -r requirements-dev.txt
+        pip install VBMicrolensing>=5.0.0
+        python -m build
     - name: Publish to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
@@ -127,7 +137,12 @@ jobs:
     - name: Install package in development mode
       run: pip install .
     - name: Build package
-      run: python -m build
+      run: |
+        pip install build
+        pip install pybind11 numpy
+        pip install -r requirements-dev.txt
+        pip install VBMicrolensing>=5.0.0
+        python -m build
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
