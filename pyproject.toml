@@ -77,10 +77,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/GregCuautle/SURP25"
+Homepage = "https://github.com/GCMicrolensing-Org/GCMicrolensing"
 Documentation = "https://gcmicrolensing.readthedocs.io/"
-Repository = "https://github.com/GregCuautle/SURP25"
-Issues = "https://github.com/GregCuautle/SURP25/issues"
+Repository = "https://github.com/GCMicrolensing-Org/GCMicrolensing"
+Issues = "https://github.com/GCMicrolensing-Org/GCMicrolensing/issues"
 
 [tool.setuptools.dynamic]
 version = {attr = "GCMicrolensing.__version__"}

@@ -17,7 +17,7 @@ setup(
     description="Tools for simulating gravitational microlensing events.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/GregCuautle/SURP25",
+    url="https://github.com/GCMicrolensing-Org/GCMicrolensing",
     packages=find_packages(),
     include_package_data=True,
     python_requires=">=3.10",

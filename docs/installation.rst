@@ -72,8 +72,8 @@ Clone the repository and install in development mode:
 
 .. code-block:: bash
 
-   git clone https://github.com/AmberLee2427/Costa.git
-   cd Costa
+   git clone https://github.com/GCMicrolensing-Org/GCMicrolensing.git
+   cd GCMicrolensing
    pip install -e .
 
 Using Conda
@@ -134,7 +134,7 @@ Getting Help
 If you encounter issues during installation:
 
 1. Check the `troubleshooting` section above
-2. Search existing issues on the `GitHub repository <https://github.com/AmberLee2427/Costa/issues>`_
+2. Search existing issues on the `GitHub repository <https://github.com/GCMicrolensing-Org/GCMicrolensing/issues>`_
 3. Create a new issue with detailed error information
 
 Development Installation
@@ -144,8 +144,8 @@ For developers who want to contribute to the project:
 
 .. code-block:: bash
 
-   git clone https://github.com/AmberLee2427/Costa.git
-   cd Costa
+   git clone https://github.com/GCMicrolensing-Org/GCMicrolensing.git
+   cd GCMicrolensing
    pip install -e ".[dev]"
 
 This installs additional development dependencies for testing and documentation building.

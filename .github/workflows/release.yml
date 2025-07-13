@@ -43,11 +43,12 @@ jobs:
         VERSION=${GITHUB_REF_NAME#v}
         DATE=$(date +%Y-%m-%d)
         python .github/scripts/bump_version.py $VERSION $DATE
+
     - name: Commit version/citation updates
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add setup.py CITATION.cff README.md
+        git add setup.py CITATION.cff README.md GCMicrolensing/__init__.py
         git commit -m "chore: bump version to v${GITHUB_REF_NAME#v} for release" || echo "No changes to commit"
         git push || echo "No changes to push"
 

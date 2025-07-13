@@ -10,8 +10,8 @@ authors:
 version: "0.1.0"
 date-released: "2024-06-10"
 doi: "10.5281/zenodo.1234567"  # Replace with your Zenodo DOI if available
-url: "https://github.com/GregCuautle/SURP25"
-repository-code: "https://github.com/GregCuautle/SURP25"
+url: "https://github.com/GCMicrolensing-Org/GCMicrolensing"
+repository-code: "https://github.com/GCMicrolensing-Org/GCMicrolensing"
 license: MIT
 keywords:
   - astronomy
@@ -27,7 +27,7 @@ preferred-citation:
     - family-names: Costa Cuautle
       given-names: Gregory
   year: 2024
-  url: "https://github.com/GregCuautle/SURP25"
+  url: "https://github.com/GCMicrolensing-Org/GCMicrolensing"
   # Add journal info/DOI if published
 
 # Recommended citations for dependencies

@@ -20,6 +20,13 @@ if len(sys.argv) != 3:
 version = sys.argv[1]
 date = sys.argv[2]
 
+# Update GCMicrolensing/__init__.py
+init_file = Path("GCMicrolensing/__init__.py")
+if init_file.exists():
+    text = init_file.read_text()
+    text = re.sub(r'__version__\s*=\s*"[^"]+"', f'__version__ = "{version}"', text)
+    init_file.write_text(text)
+
 # Update setup.py
 setup_py = Path("setup.py")
 if setup_py.exists():

@@ -1,5 +1,5 @@
 [![PyPI version](https://img.shields.io/pypi/v/GCMicrolensing.svg)](https://pypi.org/project/GCMicrolensing/)
-[![CI](https://github.com/AmberLee2427/Costa/actions/workflows/ci.yml/badge.svg)](https://github.com/AmberLee2427/Costa/actions/workflows/ci.yml)
+[![CI](https://github.com/GCMicrolensing-Org/GCMicrolensing/actions/workflows/ci.yml/badge.svg)](https://github.com/GCMicrolensing-Org/GCMicrolensing/actions/workflows/ci.yml)
 [![Read the Docs](https://readthedocs.org/projects/gcmicrolensing/badge/?version=latest)](https://gcmicrolensing.readthedocs.io/en/latest/?badge=latest)
 
 # GCMicrolensing
@@ -16,8 +16,8 @@ This package requires a custom version of `TripleLensing` with modifications by 
 If you cloned this repository, the custom `TripleLensing` is included and will be installed automatically:
 
 ```bash
-git clone <repository-url>
-cd Costa
+git clone https://github.com/GCMicrolensing-Org/GCMicrolensing.git
+cd GCMicrolensing
 pip install -e .
 ```
 
