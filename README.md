@@ -1,6 +1,4 @@
-[![PyPI version](https://img.shields.io/pypi/v/GCMicrolensing.svg)](https://pypi.org/project/GCMicrolensing/)
-[![CI](https://github.com/GCMicrolensing-Org/GCMicrolensing/actions/workflows/ci.yml/badge.svg)](https://github.com/GCMicrolensing-Org/GCMicrolensing/actions/workflows/ci.yml)
-[![Read the Docs](https://readthedocs.org/projects/gcmicrolensing/badge/?version=latest)](https://gcmicrolensing.readthedocs.io/en/latest/?badge=latest)
+[![PyPI version](https://img.shields.io/pypi/v/GCMicrolensing.svg)](https://pypi.org/project/GCMicrolensing/)[![Read the Docs](https://readthedocs.org/projects/gcmicrolensing/badge/?version=latest)](https://gcmicrolensing.readthedocs.io/en/latest/?badge=latest)[![CI](https://github.com/GCMicrolensing-Org/GCMicrolensing/actions/workflows/ci.yml/badge.svg)](https://github.com/GCMicrolensing-Org/GCMicrolensing/actions/workflows/ci.yml)[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 # GCMicrolensing
 
