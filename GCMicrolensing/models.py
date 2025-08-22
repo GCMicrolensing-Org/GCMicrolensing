@@ -14,7 +14,7 @@ their new dedicated modules.
 
 # Re-export classes from their dedicated modules for backwards compatibility
 from .oneL1S import OneL1S
-from .twoL1S import TwoLens1S  
 from .threeL1S import ThreeLens1S, ThreeLens1SVBM
+from .twoL1S import TwoLens1S
 
 __all__ = ["OneL1S", "TwoLens1S", "ThreeLens1S", "ThreeLens1SVBM"]

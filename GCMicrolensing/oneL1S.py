@@ -1,17 +1,12 @@
 # oneL1S.py
 """Single-lens microlensing model implementation."""
 
-import math
-
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
 import VBMicrolensing
-from IPython.display import HTML
 from matplotlib.gridspec import GridSpec
-from matplotlib.lines import Line2D
 
-from .TestML import get_allimgs_with_mu, get_crit_caus, getphis_v3, testing
 
 class OneL1S:
     """Simple single-lens single-source (1L1S) model.
@@ -79,14 +74,16 @@ class OneL1S:
             cent_x_hr = r_cent * np.cos(theta)
             cent_y_hr = r_cent * np.sin(theta)
 
-            systems.append({
-                'u0': u0,
-                'color': color,
-                'x_src_hr': x_src_hr,
-                'y_src_hr': y_src_hr,
-                'cent_x_hr': cent_x_hr,
-                'cent_y_hr': cent_y_hr,
-            })
+            systems.append(
+                {
+                    "u0": u0,
+                    "color": color,
+                    "x_src_hr": x_src_hr,
+                    "y_src_hr": y_src_hr,
+                    "cent_x_hr": cent_x_hr,
+                    "cent_y_hr": cent_y_hr,
+                }
+            )
         return systems
 
     def plot_light_curve_on_ax(self, ax):
@@ -199,8 +196,8 @@ class OneL1S:
 
         Returns
         -------
-        IPython.display.HTML
-            HTML representation of the animation for use in notebooks.
+        matplotlib.animation.FuncAnimation
+            Animation object for the microlensing event.
         """
         tau = self.tau
         n = len(self.t)

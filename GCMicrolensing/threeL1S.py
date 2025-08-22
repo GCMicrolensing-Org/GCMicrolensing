@@ -1,18 +1,16 @@
 # threeL1S.py
 """Triple-lens microlensing model implementations."""
 
-import math
-
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
 import VBMicrolensing
 from IPython.display import HTML
-from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
 from .TestML import get_allimgs_with_mu, get_crit_caus, getphis_v3, testing
 from .triplelens import TripleLensing
+
 
 class ThreeLens1SVBM:
     """Triple-lens, single-source model using VBMicrolensing.

@@ -11,5 +11,5 @@ This package is under development and the documentation is not yet complete.
 __version__ = "0.1.0"  # Start with a simple version number, update as you go!
 
 from .oneL1S import OneL1S  # noqa: F401
-from .twoL1S import TwoLens1S  # noqa: F401
 from .threeL1S import ThreeLens1S, ThreeLens1SVBM  # noqa: F401
+from .twoL1S import TwoLens1S  # noqa: F401

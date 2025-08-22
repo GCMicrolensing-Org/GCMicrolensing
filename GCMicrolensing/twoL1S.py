@@ -1,4 +1,4 @@
-# twoL1S.py  
+# twoL1S.py
 """Binary-lens microlensing model implementation."""
 
 import math
@@ -11,7 +11,6 @@ from IPython.display import HTML
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
-from .TestML import get_allimgs_with_mu, get_crit_caus, getphis_v3, testing
 
 class TwoLens1S:
     """Binary-lens, single-source (2L1S) model.
@@ -309,9 +308,9 @@ class TwoLens1S:
         """Plot the centroid shift trajectory."""
         plt.figure(figsize=(6, 6))
         for system in self.systems:
-            delta_x = system['cent_x_hr'] - system['x_src_hr']
-            delta_y = system['cent_y_hr'] - system['y_src_hr']
-            plt.plot(delta_x, delta_y, color=system['color'], label=rf"$u_0$ = {system['u0']}")
+            delta_x = system["cent_x_hr"] - system["x_src_hr"]
+            delta_y = system["cent_y_hr"] - system["y_src_hr"]
+            plt.plot(delta_x, delta_y, color=system["color"], label=rf"$u_0$ = {system['u0']}")
         plt.xlabel(r"$\delta \Theta_1$")
         plt.ylabel(r"$\delta \Theta_2$")
         plt.gca().set_aspect("equal")
@@ -325,11 +324,13 @@ class TwoLens1S:
         """Plot the centroid shift magnitude over time."""
         plt.figure(figsize=(6, 4))
         for system in self.systems:
-            delta_x = system['cent_x_hr'] - system['x_src_hr']
-            delta_y = system['cent_y_hr'] - system['y_src_hr']
+            delta_x = system["cent_x_hr"] - system["x_src_hr"]
+            delta_y = system["cent_y_hr"] - system["y_src_hr"]
             delta_theta = np.sqrt(delta_x**2 + delta_y**2)
-            plt.plot(self.tau_hr, delta_theta, color=system['color'], label=rf"$u_0$ = {system['u0']}")
-        
+            plt.plot(
+                self.tau_hr, delta_theta, color=system["color"], label=rf"$u_0$ = {system['u0']}"
+            )
+
         plt.xlabel(r"Time ($\tau$)")
         plt.ylabel(r"$|\delta \vec{\Theta}|$")
         plt.title(r"Centroid Shift over Time ($\tau$)")
@@ -460,51 +461,6 @@ class TwoLens1S:
         ani = animation.FuncAnimation(fig, update, frames=len(self.t), interval=50, blit=True)
         plt.close(fig)
         return HTML(ani.to_jshtml())
-
-    def plot_centroid_trajectory(self):
-        """Plot the centroid trajectory for each ``u0`` value."""
-        plt.figure(figsize=(6, 6))
-        for system in self.systems:
-            delta_x = system["cent_x_hr"] - system["x_src_hr"]
-            delta_y = system["cent_y_hr"] - system["y_src_hr"]
-            plt.plot(
-                delta_x,
-                delta_y,
-                color=system["color"],
-                label=rf"$u_0$ = {system['u0']}",
-            )
-        plt.xlim(-0.4, 0.8)
-        plt.ylim(-0.4, 0.5)
-        plt.xlabel(r"$\delta \Theta_1$")
-        plt.ylabel(r"$\delta \Theta_2$")
-        plt.gca().set_aspect("equal")
-        plt.title("Centroid Trajectory")
-        plt.grid(True)
-        plt.legend()
-        plt.tight_layout()
-        plt.show()
-
-    def plot_centroid_shift(self):
-        """Plot the centroid shift amplitude over time."""
-        plt.figure(figsize=(6, 4))
-        for system in self.systems:
-            delta_x = system["cent_x_hr"] - system["x_src_hr"]
-            delta_y = system["cent_y_hr"] - system["y_src_hr"]
-            delta_theta = np.sqrt(delta_x**2 + delta_y**2)
-            plt.plot(
-                self.tau_hr,
-                delta_theta,
-                color=system["color"],
-                label=rf"$u_0$ = {system['u0']}",
-            )
-
-        plt.xlabel(r"Time ($\tau$)")
-        plt.ylabel(r"$|\delta \vec{\Theta}|$")
-        plt.title(r"Centroid Shift over Time ($\tau$)")
-        plt.grid(True)
-        plt.legend()
-        plt.tight_layout()
-        plt.show()
 
     def show_all(self):
         """Display a grid of animations and plots."""

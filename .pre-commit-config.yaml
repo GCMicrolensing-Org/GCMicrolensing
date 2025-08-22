@@ -1,14 +1,4 @@
 repos:
-  # Remove virtual environment to speed up bandit
-  - repo: local
-    hooks:
-      - id: remove-venv
-        name: Remove virtual environment
-        entry: bash -c 'if [ -d "venv" ]; then echo "Removing venv directory..."; rm -rf venv; fi'
-        language: system
-        pass_filenames: false
-        always_run: true
-
   # Code formatting
   - repo: https://github.com/psf/black
     rev: 24.1.1

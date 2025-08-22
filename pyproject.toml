@@ -15,6 +15,7 @@ readme = "README.md"
 license = {text = "MIT"}
 authors = [
     {name = "Gregory Costa Cuautle", email = "costa.130@buckeyemail.osu.edu"},
+    {name = "Amber Malpas", email = "malpas.1@osu.edu"}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
