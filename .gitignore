@@ -125,3 +125,6 @@ triplelens/*.egg-info/
 bandit-report.json
 bandit-report.xml
 bandit-report.html
+
+# Specific files
+ML.py
