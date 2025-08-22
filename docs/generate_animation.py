@@ -8,7 +8,7 @@ and saves it as a GIF file that can be included in the documentation.
 
 import os
 
-from GCMicrolensing.models import OneL1S
+from GCMicrolensing import OneL1S
 
 # Create a single lens model
 model = OneL1S(t0=2450000, tE=20, rho=0.001, u0_list=[0.1, 0.5, 1.0])

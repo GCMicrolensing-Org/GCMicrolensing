@@ -3,7 +3,7 @@
 import matplotlib
 import matplotlib.pyplot as plt
 
-from GCMicrolensing.models import OneL1S, ThreeLens1S, ThreeLens1SVBM, TwoLens1S
+from GCMicrolensing import OneL1S, ThreeLens1S, ThreeLens1SVBM, TwoLens1S
 
 matplotlib.use("Agg")  # Use non-interactive backend for CI
 

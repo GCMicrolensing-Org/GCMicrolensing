@@ -71,7 +71,7 @@ class ThreeLens1SVBM:
         self.VBM.SetMethod(self.VBM.Method.Nopoly)
 
         # Initialize TripleLensing for image position calculations
-        self.TRIL = TripleLensing.TripleLensing()
+        self.TRIL = TripleLensing()
 
         self.colors = [plt.colormaps["BuPu"](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
         self.systems = self._prepare_systems()
@@ -391,7 +391,7 @@ class ThreeLens1S:
         self.t = self.t0 + self.tau * self.tE
 
         # Initialize TripleLensing for calculations
-        self.TRIL = TripleLensing.TripleLensing()
+        self.TRIL = TripleLensing()
         self.colors = [plt.colormaps["BuPu"](i) for i in np.linspace(1.0, 0.4, len(u0_list))]
         self.systems = self._prepare_systems()
 
